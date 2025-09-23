@@ -4,16 +4,7 @@ import { motion } from 'framer-motion';
 import { BookOpen, Play, Download, FileText, Calendar, Users, CheckCircle2, Bell, Search, ClipboardList, Pencil, Send, Sparkles, Lightbulb, BrainCircuit, Video, NotebookPen, LayoutGrid, GraduationCap, ListChecks, Wand2, BellRing, Settings } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
-
-const brand = {
-  blue: '#0e5fac',
-  orange: '#f9b43e',
-  rose: '#d04a5c',
-  lightBlue: '#10a8f7'
-};
-
-const card = 'rounded-xl bg-white shadow-sm border border-slate-200 overflow-hidden';
-const gradient = (a: string, b: string) => `bg-[linear-gradient(135deg,${a}18,${b}18)]`;
+import { brand, gradients, components, utils } from '@/lib/design-system';
 
 type Kid = {
   id: string;
