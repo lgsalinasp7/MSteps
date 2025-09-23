@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { useDashboardData } from '@/hooks/useDashboardData';
 import { motion } from 'framer-motion';
 import { Church, Users, BookOpen, Calendar, UploadCloud, FileText, Video, Settings, BarChart3, CreditCard, Bell, Mail, MessageSquare, Plus, Search, CheckCircle2 } from 'lucide-react';
+import Link from 'next/link';
+import { HeaderBar } from '@/components/shared/HeaderBar';
+import { SidebarNav, type NavItem } from '@/components/shared/SidebarNav';
+import { StatsCards } from '@/components/shared/StatsCards';
+import { AttendanceArea, ParticipationBars } from '@/components/shared/Charts';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 const brand = {
   blue: '#0e5fac',
@@ -10,66 +17,7 @@ const brand = {
 };
 const card = 'rounded-xl bg-white shadow-sm border border-slate-200/70 overflow-hidden';
 const gradient = (from: string, to: string) => `bg-[linear-gradient(135deg,${from}20,${to}20)]`;
-const stats = [{
-  label: 'Niños inscritos',
-  value: '1,200',
-  icon: Users,
-  color: brand.blue
-}, {
-  label: 'Iglesias activas',
-  value: '25',
-  icon: Church,
-  color: brand.orange
-}, {
-  label: 'Clases esta semana',
-  value: '5',
-  icon: BookOpen,
-  color: brand.rose
-}, {
-  label: 'Licencias congregacionales',
-  value: '10',
-  icon: Settings,
-  color: brand.lightBlue
-}] as any[];
-const asistenciaData = [{
-  name: 'Lun',
-  valor: 120
-}, {
-  name: 'Mar',
-  valor: 180
-}, {
-  name: 'Mié',
-  valor: 140
-}, {
-  name: 'Jue',
-  valor: 200
-}, {
-  name: 'Vie',
-  valor: 160
-}, {
-  name: 'Sáb',
-  valor: 220
-}, {
-  name: 'Dom',
-  valor: 260
-}] as any[];
-const participacionData = [{
-  name: 'Iglesia A',
-  niños: 80,
-  maestros: 12
-}, {
-  name: 'Iglesia B',
-  niños: 65,
-  maestros: 10
-}, {
-  name: 'Iglesia C',
-  niños: 95,
-  maestros: 14
-}, {
-  name: 'Iglesia D',
-  niños: 55,
-  maestros: 9
-}] as any[];
+// Datos dinámicos del dashboard via API
 const quickActions = [{
   icon: UploadCloud,
   label: 'Subir material',
@@ -90,103 +38,57 @@ const quickActions = [{
 
 // @component: MasterstepsAdminDashboard
 export const MasterstepsAdminDashboard: React.FC = () => {
+  const { logout } = useAuth();
+  const { loading, error, stats, asistencia, participacion } = useDashboardData();
+  const uiStats = useMemo(() => {
+    const iconByLabel: Record<string, any> = {
+      'Niños inscritos': Users,
+      'Iglesias activas': Church,
+      'Clases esta semana': BookOpen,
+      'Licencias congregacionales': Settings,
+    };
+    const colorByLabel: Record<string, string> = {
+      'Niños inscritos': brand.blue,
+      'Iglesias activas': brand.orange,
+      'Clases esta semana': brand.rose,
+      'Licencias congregacionales': brand.lightBlue,
+    };
+    return stats.map((s) => ({
+      ...s,
+      icon: iconByLabel[s.label] ?? Users,
+      color: colorByLabel[s.label] ?? brand.blue,
+    }));
+  }, [stats]);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (!menuRef.current) return;
+      if (!menuRef.current.contains(e.target as Node)) setMenuOpen(false);
+    }
+    document.addEventListener('click', onDocClick);
+    return () => document.removeEventListener('click', onDocClick);
+  }, []);
   // @return
   return <div className="min-h-screen w-full bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur" style={{}}>
-        <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-3">
-          <div className={`size-9 rounded-md ${gradient(brand.blue, brand.lightBlue)} flex items-center justify-center`}>
-            <BookOpen className="size-5" color={brand.blue} />
-          </div>
-          <div className="flex-1">
-            <h1 className="text-lg font-semibold leading-tight">
-              Mastersteps • Administrador
-            </h1>
-            <p className="text-xs text-slate-500">
-              Gestión central de clases, contenidos y automatizaciones
-            </p>
-          </div>
-          <div className="hidden md:flex items-center gap-2">
-            <div className="relative">
-              <Search className="size-4 absolute left-2 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input placeholder="Buscar..." className="pl-8 pr-3 py-1.5 rounded-md border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#10a8f7] bg-white text-sm" />
-            </div>
-            <button className="p-2 rounded-md border border-slate-200 hover:bg-slate-100">
-              <Bell className="size-5 text-slate-600" />
-            </button>
-            <div className="h-6 w-px bg-slate-200" />
-            <div className="flex items-center gap-2">
-              <div className={`size-8 rounded-full ${gradient(brand.orange, brand.rose)} flex items-center justify-center`}>
-                <span className="text-sm font-semibold text-slate-800">AD</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <HeaderBar title="Mastersteps • Administrador" subtitle="Gestión central de clases, contenidos y automatizaciones" />
 
       <div className="mx-auto max-w-7xl px-4 py-6 grid grid-cols-12 gap-6">
         <aside className="col-span-12 md:col-span-3 lg:col-span-2">
-          <nav className={`${card}`}>
-            <div className="p-3 border-b border-slate-200/70">
-              <span className="text-xs font-medium text-slate-500">
-                Navegación
-              </span>
-            </div>
-            <ul className="p-2">
-              {[{
-              icon: BarChart3,
-              label: 'Panel',
-              active: true
-            }, {
-              icon: UploadCloud,
-              label: 'Contenidos'
-            }, {
-              icon: Calendar,
-              label: 'Automatizaciones'
-            }, {
-              icon: Users,
-              label: 'Usuarios'
-            }, {
-              icon: BookOpen,
-              label: 'Reportes'
-            }, {
-              icon: CreditCard,
-              label: 'Membresías y Pagos'
-            }, {
-              icon: Settings,
-              label: 'Configuración'
-            }].map((i, idx) => <li key={idx}>
-                  <button className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm hover:bg-slate-50 ${i.active ? 'bg-slate-50 border border-slate-200' : 'text-slate-700'}`}>
-                    <i.icon className="size-4" />
-                    {i.label}
-                  </button>
-                </li>)}
-            </ul>
-          </nav>
+          <SidebarNav items={[
+            { icon: BarChart3, label: 'Panel', active: true },
+            { icon: UploadCloud, label: 'Contenidos' },
+            { icon: Calendar, label: 'Automatizaciones' },
+            { icon: Users, label: 'Usuarios' },
+            { icon: BookOpen, label: 'Reportes' },
+            { icon: CreditCard, label: 'Membresías y Pagos' },
+            { icon: Settings, label: 'Configuración' },
+          ] as NavItem[]} />
         </aside>
 
         <main className="col-span-12 md:col-span-9 lg:col-span-10 space-y-6">
-          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {stats.map((s, i) => <motion.div key={i} className={`${card} p-4`} initial={{
-            opacity: 0,
-            y: 12
-          }} animate={{
-            opacity: 1,
-            y: 0
-          }} transition={{
-            delay: i * 0.05
-          }}>
-                <div className="flex items-center justify-between">
-                  <div className={`size-10 rounded-md ${gradient(s.color, brand.lightBlue)} flex items-center justify-center`}>
-                    <s.icon className="size-5" color={s.color} />
-                  </div>
-                  <CheckCircle2 className="size-5 text-emerald-500/80" />
-                </div>
-                <div className="mt-3">
-                  <p className="text-xs text-slate-500">{s.label}</p>
-                  <p className="text-2xl font-semibold">{s.value}</p>
-                </div>
-              </motion.div>)}
-          </section>
+          <StatsCards items={(loading ? Array.from({ length: 4 }).map((_, i) => ({ label: '—', value: '—', icon: Users, color: brand.blue })) : uiStats)} cardClass={card} gradient={gradient} />
 
           <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className={`${card} col-span-2`}>
@@ -194,23 +96,7 @@ export const MasterstepsAdminDashboard: React.FC = () => {
                 <h3 className="font-semibold">Asistencia semanal</h3>
                 <span className="text-xs text-slate-500">Últimos 7 días</span>
               </div>
-              <div className="p-2 h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={asistenciaData}>
-                    <defs>
-                      <linearGradient id="grad1" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stopColor={brand.lightBlue} stopOpacity={0.6} />
-                        <stop offset="100%" stopColor={brand.lightBlue} stopOpacity={0.05} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid stroke="#eef2f7" vertical={false} />
-                    <XAxis dataKey="name" stroke="#94a3b8" />
-                    <YAxis stroke="#94a3b8" />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="valor" stroke={brand.lightBlue} fill="url(#grad1)" strokeWidth={2} />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
+              <div className="p-2 h-64"><AttendanceArea data={asistencia} color={brand.lightBlue} /></div>
             </div>
 
             <div className={`${card}`}>
@@ -233,18 +119,7 @@ export const MasterstepsAdminDashboard: React.FC = () => {
                 <h3 className="font-semibold">Participación por iglesia</h3>
                 <span className="text-xs text-slate-500">Niños vs. Maestros</span>
               </div>
-              <div className="p-2 h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={participacionData}>
-                    <CartesianGrid stroke="#eef2f7" vertical={false} />
-                    <XAxis dataKey="name" stroke="#94a3b8" />
-                    <YAxis stroke="#94a3b8" />
-                    <Tooltip />
-                    <Bar dataKey="niños" fill={brand.blue} radius={[6, 6, 0, 0]} />
-                    <Bar dataKey="maestros" fill={brand.orange} radius={[6, 6, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
+              <div className="p-2 h-64"><ParticipationBars data={participacion} colorA={brand.blue} colorB={brand.orange} /></div>
             </div>
 
             <div className={`${card}`}>

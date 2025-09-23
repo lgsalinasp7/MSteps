@@ -27,7 +27,7 @@ export function MoveProvider({ children }: { children: React.ReactNode }) {
   // const [templateGroups, setTemplateGroups] = useState<Record<string, string[]>>({});
   const [pendingMove, setPendingMove] = useState<Move | null>(null);
   const [pendingUndoMove, setPendingUndoMove] = useState<Move | null>(null);
-  const [isEditMode, setIsEditMode] = useState((window as any).__editModeActive || false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const [history, setHistory] = useState<MoveHistory>({
     moves: [],
@@ -35,6 +35,11 @@ export function MoveProvider({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
+    // Cargar estado inicial solo en el cliente
+    if (typeof window !== 'undefined') {
+      setIsEditMode((window as any).__editModeActive || false);
+    }
+
     const listener = (e: MessageEvent) => {
       if (!e.data || typeof e.data.type !== 'string') return;
 
@@ -43,9 +48,10 @@ export function MoveProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
-    window.addEventListener('message', listener);
-
-    return () => window.removeEventListener('message', listener);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('message', listener);
+      return () => window.removeEventListener('message', listener);
+    }
   }, []);
 
   const getChildrenOf = useCallback(
