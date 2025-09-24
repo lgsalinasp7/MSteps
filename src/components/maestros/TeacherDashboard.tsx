@@ -137,7 +137,7 @@ export const TeacherDashboard: React.FC = () => {
       {active === 'panel' && (
         <>
           {/* Tarjetas de estadísticas */}
-          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {[
               {
                 title: "Estudiantes Activos",
@@ -181,7 +181,7 @@ export const TeacherDashboard: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-200"
+                className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-200"
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className={`size-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center text-white text-xl shadow-md`}>

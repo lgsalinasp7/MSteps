@@ -71,15 +71,17 @@ export const MasterstepsAdminDashboard: React.FC = () => {
   // Header Actions
   const headerActions = (
     <>
-      <button className="px-4 py-2 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 flex items-center gap-2">
+      <button className="px-3 sm:px-4 py-2 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 flex items-center gap-2 text-sm">
         <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-        Exportar Reporte
+        <span className="hidden sm:inline">Exportar Reporte</span>
+        <span className="sm:hidden">Exportar</span>
       </button>
-      <button className="px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-200 shadow-lg flex items-center gap-2">
+      <button className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-200 shadow-lg flex items-center gap-2 text-sm">
         <span className="text-lg">+</span>
-        Nueva Iglesia
+        <span className="hidden sm:inline">Nueva Iglesia</span>
+        <span className="sm:hidden">Nueva</span>
       </button>
     </>
   );
@@ -87,21 +89,21 @@ export const MasterstepsAdminDashboard: React.FC = () => {
   // Filters
   const filters = (
     <>
-      <div className="flex-1 relative">
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 size-5" />
-        <input 
+      <div className="flex-1 relative min-w-0">
+        <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 size-4 sm:size-5" />
+        <input
           type="text"
           placeholder="Buscar iglesias, usuarios, reportes..."
-          className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2 sm:py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
         />
-            </div>
-      <select className="px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <select className="px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm min-w-0 flex-shrink-0">
         <option>Todas las Iglesias</option>
         <option>Activas</option>
         <option>Inactivas</option>
         <option>Nuevas</option>
       </select>
-      <select className="px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <select className="px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm min-w-0 flex-shrink-0">
         <option>Este Mes</option>
         <option>Últimos 3 Meses</option>
         <option>Este Año</option>
@@ -119,7 +121,7 @@ export const MasterstepsAdminDashboard: React.FC = () => {
       filters={filters}
     >
       {/* Tarjetas de resumen administrativo */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
         {[
           {
             title: "Total Estudiantes",
@@ -163,10 +165,10 @@ export const MasterstepsAdminDashboard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-200"
+            className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-200"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className={`size-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center text-white text-xl shadow-md`}>
+              <div className={`size-10 sm:size-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center text-white text-lg sm:text-xl shadow-md`}>
                 {stat.icon}
               </div>
               <span className={`px-2 py-1 text-xs font-medium rounded-full ${
@@ -175,27 +177,27 @@ export const MasterstepsAdminDashboard: React.FC = () => {
                 {stat.change}
               </span>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</h3>
-            <p className="text-sm font-medium text-gray-900 mb-1">{stat.title}</p>
-            <p className="text-xs text-gray-500">{stat.description}</p>
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">{stat.value}</h3>
+            <p className="text-xs sm:text-sm font-medium text-gray-900 mb-1 line-clamp-1">{stat.title}</p>
+            <p className="text-xs text-gray-500 line-clamp-1">{stat.description}</p>
           </motion.div>
         ))}
       </div>
 
       {/* Sección de gráficos y reportes */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
         {/* Gráfico de Asistencia */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-200">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-lg font-bold text-gray-900">Asistencia Semanal</h3>
-              <p className="text-sm text-gray-600">Participación de estudiantes</p>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900">Asistencia Semanal</h3>
+              <p className="text-xs sm:text-sm text-gray-600">Participación de estudiantes</p>
             </div>
             <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
               Últimos 7 días
             </span>
           </div>
-          <div className="h-64 bg-gradient-to-br from-blue-50 to-orange-50 rounded-xl flex items-center justify-center">
+          <div className="h-48 sm:h-64 bg-gradient-to-br from-blue-50 to-orange-50 rounded-xl flex items-center justify-center">
             <AttendanceArea data={asistencia} color={brand.secondary} />
           </div>
         </div>
@@ -237,14 +239,14 @@ export const MasterstepsAdminDashboard: React.FC = () => {
             </div>
 
       {/* Sección de gestión rápida */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
         {/* Acciones Administrativas */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-200">
           <div className="flex items-center gap-3 mb-4">
             <div className="size-10 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white">
               ⚡
             </div>
-            <h3 className="text-lg font-bold text-gray-900">Acciones Rápidas</h3>
+            <h3 className="text-base sm:text-lg font-bold text-gray-900">Acciones Rápidas</h3>
           </div>
           <div className="space-y-3">
             {[
@@ -260,7 +262,7 @@ export const MasterstepsAdminDashboard: React.FC = () => {
                 <div className={`size-8 rounded-xl bg-gradient-to-br ${accion.color} flex items-center justify-center text-white text-sm`}>
                   {accion.icon}
               </div>
-                <span className="text-sm font-medium text-gray-900">{accion.label}</span>
+                <span className="text-xs sm:text-sm font-medium text-gray-900 line-clamp-2">{accion.label}</span>
               </button>
             ))}
               </div>

@@ -53,26 +53,26 @@ export function GlobalHeader() {
       {/* Fondo con textura sutil */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/20"></div>
       
-      <div className="relative z-10 px-6 py-4">
+      <div className="relative z-10 px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           {/* Logo y marca */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* Logo sin fondo */}
-              <div className="size-12 rounded-xl flex items-center justify-center">
+              <div className="size-10 sm:size-12 rounded-xl flex items-center justify-center">
                 <Image 
                   src="/logo.png" 
                   alt="Mastersteps Logo" 
-                  width={32} 
-                  height={32} 
-                  className="object-contain"
+                  width={24} 
+                  height={24} 
+                  className="object-contain sm:w-8 sm:h-8"
                 />
               </div>
               
-              {/* Texto de la marca */}
-              <div>
-                <h1 className="text-xl font-bold text-white">Mastersteps</h1>
-                <p className="text-xs text-blue-100">Plataforma Educativa</p>
+              {/* Texto de la marca - Oculto en móvil pequeño */}
+              <div className="hidden xs:block">
+                <h1 className="text-lg sm:text-xl font-bold text-white">Mastersteps</h1>
+                <p className="text-xs text-blue-100 hidden sm:block">Plataforma Educativa</p>
               </div>
             </div>
           </div>
@@ -89,27 +89,27 @@ export function GlobalHeader() {
           </div>
           
           {/* Área de usuario */}
-          <div className="flex items-center gap-4">
-            {/* Notificaciones */}
-            <button className="relative p-3 rounded-xl hover:bg-white/20 transition-all duration-200">
-              <Bell className="size-5 text-white" />
-              <span className="absolute -top-1 -right-1 size-5 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center border-2" style={{ borderColor: '#0B317D' }}>
+          <div className="flex items-center gap-2 sm:gap-4">
+            {/* Notificaciones - Oculto en móvil pequeño */}
+            <button className="relative p-2 sm:p-3 rounded-xl hover:bg-white/20 transition-all duration-200">
+              <Bell className="size-4 sm:size-5 text-white" />
+              <span className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 size-4 sm:size-5 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center border-2" style={{ borderColor: '#0B317D' }}>
                 <span className="text-white text-xs font-bold">3</span>
               </span>
             </button>
-            
-            <div className="h-6 w-px bg-white/20" />
-            
+
+            <div className="hidden sm:block h-6 w-px bg-white/20" />
+
             {/* Perfil de usuario */}
             <div className="relative" ref={menuRef}>
-              <button 
-                onClick={() => setMenuOpen(!menuOpen)} 
-                className="flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-white/20 transition-all duration-200"
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-2 rounded-xl hover:bg-white/20 transition-all duration-200"
               >
-                <div 
-                  className={`size-10 rounded-full bg-gradient-to-br ${getRoleColor()} flex items-center justify-center text-white font-bold shadow-lg`}
+                <div
+                  className={`size-8 sm:size-10 rounded-full bg-gradient-to-br ${getRoleColor()} flex items-center justify-center text-white font-bold shadow-lg`}
                 >
-                  {getRoleIcon()}
+                  <span className="text-sm sm:text-base">{getRoleIcon()}</span>
                 </div>
                 <div className="hidden lg:block text-left">
                   <p className="text-sm font-semibold text-white">{state.user?.name || 'Usuario'}</p>
@@ -118,7 +118,7 @@ export function GlobalHeader() {
               </button>
               
               {menuOpen && (
-                <div className="absolute right-0 mt-3 w-72 rounded-2xl bg-white shadow-2xl border border-gray-200 z-50 overflow-hidden">
+                <div className="absolute right-0 mt-3 w-64 sm:w-72 rounded-2xl bg-white shadow-2xl border border-gray-200 z-50 overflow-hidden">
                   {/* Header del menú */}
                   <div className="p-4 bg-gradient-to-r from-blue-50 to-blue-100 border-b border-blue-200">
                     <div className="flex items-center gap-3">
