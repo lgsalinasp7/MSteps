@@ -1,9 +1,9 @@
 "use client";
 import React from 'react';
-
-export const dynamic = 'force-dynamic';
 import { RequireRole } from '@/components/auth/RequireRole';
 import { ParentDashboard } from '@/components/padres/ParentDashboard';
+
+export const dynamic = 'force-dynamic';
 
 export default function PadresPage() {
   return (

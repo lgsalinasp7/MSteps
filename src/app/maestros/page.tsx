@@ -1,9 +1,9 @@
 "use client";
 import React from 'react';
-
-export const dynamic = 'force-dynamic';
 import { RequireRole } from '@/components/auth/RequireRole';
 import { TeacherDashboard } from '@/components/maestros/TeacherDashboard';
+
+export const dynamic = 'force-dynamic';
 
 export default function MaestrosPage() {
   return (

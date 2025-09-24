@@ -1,9 +1,9 @@
 "use client";
 import React from 'react';
-
-export const dynamic = 'force-dynamic';
 import { RequireRole } from '@/components/auth/RequireRole';
 import { MasterstepsAdminDashboard } from '@/components/generated/MasterstepsAdminDashboard';
+
+export const dynamic = 'force-dynamic';
 
 export default function DashboardPage() {
   return (

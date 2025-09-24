@@ -4,10 +4,12 @@ import { Bell, Search, User, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 import Image from 'next/image';
+import { LogoutModal } from './LogoutModal';
 
 export function GlobalHeader() {
   const { logout, state } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -157,7 +159,10 @@ export function GlobalHeader() {
                     </Link>
                     <div className="h-px bg-gray-200 mx-4 my-2" />
                     <button 
-                      onClick={logout} 
+                      onClick={() => {
+                        setShowLogoutModal(true);
+                        setMenuOpen(false);
+                      }} 
                       className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 w-full text-left transition-colors"
                     >
                       <div className="size-8 rounded-lg bg-red-100 flex items-center justify-center">
@@ -175,6 +180,12 @@ export function GlobalHeader() {
           </div>
         </div>
       </div>
+
+      {/* Modal de confirmación de logout */}
+      <LogoutModal 
+        isOpen={showLogoutModal} 
+        onClose={() => setShowLogoutModal(false)} 
+      />
     </header>
   );
 }

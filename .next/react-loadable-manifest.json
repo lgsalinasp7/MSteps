@@ -4,23 +4,5 @@
     "files": [
       "static/chunks/_app-pages-browser_node_modules_next_dist_client_dev_noop-turbopack-hmr_js.js"
     ]
-  },
-  "components\\auth\\RequireRole.tsx -> @/components/maestros/TeacherSkeleton": {
-    "id": "components\\auth\\RequireRole.tsx -> @/components/maestros/TeacherSkeleton",
-    "files": [
-      "static/chunks/_app-pages-browser_src_components_maestros_TeacherSkeleton_tsx.js"
-    ]
-  },
-  "components\\auth\\RequireRole.tsx -> @/components/padres/ParentSkeleton": {
-    "id": "components\\auth\\RequireRole.tsx -> @/components/padres/ParentSkeleton",
-    "files": [
-      "static/chunks/_app-pages-browser_src_components_padres_ParentSkeleton_tsx.js"
-    ]
-  },
-  "components\\auth\\RequireRole.tsx -> @/components/shared/Skeleton": {
-    "id": "components\\auth\\RequireRole.tsx -> @/components/shared/Skeleton",
-    "files": [
-      "static/chunks/_app-pages-browser_src_components_shared_Skeleton_tsx.js"
-    ]
   }
 }

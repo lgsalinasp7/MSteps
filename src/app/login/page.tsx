@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-
-export const dynamic = 'force-dynamic';
 import Login from '@/components/Login';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+
+export const dynamic = 'force-dynamic';
 
 export default function LoginPage() {
   const { state } = useAuth();

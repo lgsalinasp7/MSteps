@@ -1,8 +1,9 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/hooks/useAuth';
 import { brand, gradients, components, utils } from '@/lib/design-system';
+import { LogoutModal } from './LogoutModal';
 
 export type NavItem = {
   label: string;
@@ -14,6 +15,7 @@ export type NavItem = {
 
 export function SidebarNav({ items }: { items: NavItem[] }) {
   const { state } = useAuth();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   
   const getRoleDisplayName = () => {
     switch(state.user?.role) {
@@ -103,16 +105,7 @@ export function SidebarNav({ items }: { items: NavItem[] }) {
       <div className="p-4 border-t border-blue-500/30">
         <button 
           className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 mb-3 text-red-200 hover:bg-red-500/20 hover:text-red-100"
-          onClick={() => {
-            // Aquí se llamará a la función logout del contexto
-            if (typeof window !== 'undefined') {
-              const confirmed = confirm('¿Estás seguro de que deseas cerrar sesión?');
-              if (confirmed) {
-                localStorage.removeItem('auth-token');
-                window.location.href = '/login';
-              }
-            }
-          }}
+          onClick={() => setShowLogoutModal(true)}
         >
           <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -129,6 +122,12 @@ export function SidebarNav({ items }: { items: NavItem[] }) {
           <span className="text-blue-300">v2.0</span>
         </div>
       </div>
+
+      {/* Modal de confirmación de logout */}
+      <LogoutModal 
+        isOpen={showLogoutModal} 
+        onClose={() => setShowLogoutModal(false)} 
+      />
     </nav>
   );
 }

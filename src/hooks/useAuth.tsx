@@ -63,7 +63,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
+    // Limpiar el estado de autenticación
     setState({ user: null, isAuthenticated: false });
+    
+    // Limpiar localStorage
+    try {
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+      localStorage.removeItem('auth-token'); // Por si hay tokens legacy
+    } catch (error) {
+      console.warn('Error al limpiar localStorage:', error);
+    }
   }, []);
 
   const value = useMemo<AuthContextValue>(() => ({ state, login, logout, restoreSession: loadSavedState }), [state, login, logout, loadSavedState]);
