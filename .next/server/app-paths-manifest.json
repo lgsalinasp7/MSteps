@@ -1,4 +1,13 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/dashboard/participation/route": "app/api/dashboard/participation/route.js",
+  "/api/dashboard/stats/route": "app/api/dashboard/stats/route.js",
+  "/api/dashboard/attendance/route": "app/api/dashboard/attendance/route.js",
+  "/maestros/page": "app/maestros/page.js",
   "/login/page": "app/login/page.js",
-  "/page": "app/page.js"
+  "/padres/page": "app/padres/page.js",
+  "/page": "app/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/settings/page": "app/settings/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
 }

@@ -1,5 +1,7 @@
 "use client";
 import React from 'react';
+import Image from 'next/image';
+import { useAuth } from '@/hooks/useAuth';
 import { brand, gradients, components, utils } from '@/lib/design-system';
 
 export type NavItem = {
@@ -11,86 +13,120 @@ export type NavItem = {
 };
 
 export function SidebarNav({ items }: { items: NavItem[] }) {
+  const { state } = useAuth();
+  
+  const getRoleDisplayName = () => {
+    switch(state.user?.role) {
+      case 'admin': return 'Administrador';
+      case 'teacher': return 'Maestro';
+      case 'parent': return 'Padre';
+      default: return 'Usuario';
+    }
+  };
+
+  const getRoleIcon = () => {
+    switch(state.user?.role) {
+      case 'admin': return '👑';
+      case 'teacher': return '📚';
+      case 'parent': return '👨‍👩‍👧‍👦';
+      default: return '👤';
+    }
+  };
+
+  const getRoleColor = () => {
+    switch(state.user?.role) {
+      case 'admin': return 'from-blue-500 to-blue-600';
+      case 'teacher': return 'from-orange-500 to-orange-600';
+      case 'parent': return 'from-green-500 to-green-600';
+      default: return 'from-gray-500 to-gray-600';
+    }
+  };
+
   return (
-    <nav className={`${components.card.elevated} rounded-2xl border-0 overflow-hidden`}>
-      {/* Header con gradiente */}
-      <div 
-        className="p-4 border-b border-gray-100"
-        style={{ background: gradients.hero }}
-      >
-        <div className="flex items-center gap-3">
-          <div 
-            className="size-8 rounded-lg flex items-center justify-center shadow-lg"
-            style={{ 
-              background: `linear-gradient(135deg, ${brand.accent}, ${brand.danger})`,
-              boxShadow: '0 4px 12px rgba(249, 180, 62, 0.3)'
-            }}
-          >
-            <span className="text-white text-sm font-bold drop-shadow-sm">🔥</span>
+    <nav className="h-full bg-gradient-to-br from-blue-600 to-blue-700 text-white flex flex-col">
+
+          {/* Tarjeta de perfil de usuario */}
+          <div className="p-6 pt-8 border-b border-blue-500/30">
+            <div className="bg-blue-500/30 backdrop-blur-sm rounded-2xl p-4 border border-blue-400/30">
+              <div className="flex items-center gap-3 mb-4">
+                <div className={`size-12 rounded-full bg-gradient-to-br ${getRoleColor()} flex items-center justify-center text-white font-bold text-lg shadow-lg`}>
+                  {getRoleIcon()}
+                </div>
+                <div>
+                  <p className="text-white font-semibold">{state.user?.name || 'Usuario'}</p>
+                  <p className="text-blue-200 text-xs">{getRoleDisplayName()}</p>
+                </div>
+              </div>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between">
+                  <span className="text-blue-200">Organización</span>
+                  <span className="text-white font-semibold text-right text-xs">{state.user?.organization || 'N/A'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-blue-200">Email</span>
+                  <span className="text-orange-300 font-semibold text-xs truncate max-w-24">{state.user?.email || 'N/A'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-blue-200">Estado</span>
+                  <span className="text-green-300 font-semibold">Activo</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex-1">
-            <p className="text-sm font-semibold text-white drop-shadow-sm">Navegación</p>
-            <p className="text-xs text-white/90 drop-shadow-sm">Explora las secciones</p>
-          </div>
-          {/* Badge naranja para destacar */}
-          <div 
-            className="px-2 py-1 rounded-full text-xs font-bold text-white"
-            style={{ background: brand.accent }}
-          >
-            ✨
-          </div>
-        </div>
-      </div>
       
       {/* Items de navegación */}
-      <div className="p-2">
+      <div className="flex-1 px-4 py-2">
         {items.map((item, idx) => (
-          <div key={idx} className="mb-1">
-            <a 
-              href={item.href ?? '#'} 
-              className={`group flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                item.active 
-                  ? `${components.button.primary} shadow-md` 
-                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-              }`}
-            >
-              {/* Icono con color dinámico */}
-              <div 
-                className="size-8 rounded-lg flex items-center justify-center transition-all duration-200"
-                style={{
-                  background: item.active 
-                    ? 'rgba(255, 255, 255, 0.2)' 
-                    : `linear-gradient(135deg, ${brand.accent}20, ${brand.danger}20)`
-                }}
-              >
-                <item.icon className={`size-4 ${
-                  item.active ? 'text-white' : 'text-gray-700 group-hover:text-gray-900'
-                }`} />
-              </div>
-              
-              {/* Label */}
-              <span className="flex-1 truncate">{item.label}</span>
-              
-              {/* Badge de notificación */}
-              {item.badge && item.badge > 0 && (
-                <span className={`px-2 py-1 text-xs font-bold rounded-full ${
-                  item.active 
-                    ? 'bg-white/20 text-white' 
-                    : components.badge.warning
-                }`}>
-                  {item.badge}
-                </span>
-              )}
-            </a>
-          </div>
+          <a 
+            key={idx}
+            href={item.href ?? '#'} 
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 mb-1 ${
+              item.active 
+                ? 'bg-white/20 text-white shadow-md backdrop-blur-sm' 
+                : 'text-blue-100 hover:bg-white/10 hover:text-white'
+            }`}
+          >
+            <item.icon className="size-5" />
+            <span className="flex-1 truncate">{item.label}</span>
+            
+            {/* Badge de notificación */}
+            {item.badge && item.badge > 0 && (
+              <span className="px-2 py-0.5 text-xs font-bold rounded-full bg-orange-500 text-white">
+                {item.badge}
+              </span>
+            )}
+          </a>
         ))}
       </div>
       
-      {/* Footer con información adicional */}
-      <div className="p-4 border-t border-gray-100 bg-gray-50">
-        <div className="flex items-center gap-2 text-xs text-gray-500">
-          <div className="size-2 bg-green-500 rounded-full"></div>
-          <span>Sistema activo</span>
+      {/* Botón de cerrar sesión */}
+      <div className="p-4 border-t border-blue-500/30">
+        <button 
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 mb-3 text-red-200 hover:bg-red-500/20 hover:text-red-100"
+          onClick={() => {
+            // Aquí se llamará a la función logout del contexto
+            if (typeof window !== 'undefined') {
+              const confirmed = confirm('¿Estás seguro de que deseas cerrar sesión?');
+              if (confirmed) {
+                localStorage.removeItem('auth-token');
+                window.location.href = '/login';
+              }
+            }
+          }}
+        >
+          <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          <span>Cerrar Sesión</span>
+        </button>
+        
+        {/* Footer con estado del sistema */}
+        <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2 text-blue-200">
+            <div className="size-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span>Sistema activo</span>
+          </div>
+          <span className="text-blue-300">v2.0</span>
         </div>
       </div>
     </nav>

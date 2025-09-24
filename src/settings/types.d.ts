@@ -1,13 +1,12 @@
-export type Theme = 'light' | 'dark';
-export type Container = 'centered' | 'none';
-
 // Auth types
-export type UserRole = 'admin' | 'user' | 'teacher' | 'parent';
+export type UserRole = 'admin' | 'teacher' | 'parent';
 
 export interface AuthUser {
   id: string;
   name: string;
   role: UserRole;
+  email?: string;
+  organization?: string;
 }
 
 export interface AuthState {

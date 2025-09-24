@@ -1,12 +1,11 @@
 "use client";
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Calendar, Video, Download, Award, CheckCircle2, Clock, MessageCircle, Play, FileText, Star, Bell, Search, Home, User, Settings, BarChart3 } from 'lucide-react';
+import { BookOpen, Calendar, Video, Download, Award, CheckCircle2, Clock, MessageCircle, Play, FileText, Star, Bell, Home, Settings, BarChart3, Search, Plus } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import Link from 'next/link';
 import { brand, gradients, components, utils } from '@/lib/design-system';
-import { HeaderBar } from '@/components/shared/HeaderBar';
-import { SidebarNav, NavItem } from '@/components/shared/SidebarNav';
+import { UnifiedDashboardLayout } from '@/components/shared/UnifiedDashboardLayout';
+import { NavItem } from '@/components/shared/SidebarNav';
 
 const childProgress = {
   name: 'Sofía',
@@ -29,223 +28,332 @@ const materials = [
   { icon: Star, title: 'Trivia: Parábolas Bíblicas', questions: '10 preguntas', type: 'quiz', color: brand.danger }
 ];
 
-const sidebarNavItems: NavItem[] = [
-  { id: 'inicio', label: 'Inicio', icon: Home, href: '#inicio' },
-  { id: 'clases', label: 'Clases', icon: Calendar, href: '#clases' },
-  { id: 'progreso', label: 'Progreso', icon: BarChart3, href: '#progreso' },
-  { id: 'materiales', label: 'Materiales', icon: Download, href: '#materiales' },
-  { id: 'asistente', label: 'Asistente IA', icon: MessageCircle, href: '#asistente' },
-  { id: 'configuracion', label: 'Configuración', icon: Settings, href: '#configuracion' },
-];
-
 export function ParentDashboard() {
-  const { logout } = useAuth();
+  const { state } = useAuth();
   const [active, setActive] = useState<string>('inicio');
 
+  const sidebarItems: NavItem[] = [
+    { label: 'Dashboard', icon: Home, active: active === 'inicio' },
+    { label: 'Clases', icon: Calendar, active: active === 'clases' },
+    { label: 'Progreso', icon: BarChart3, active: active === 'progreso', badge: childProgress.badges },
+    { label: 'Materiales', icon: Download, active: active === 'materiales' },
+    { label: 'Asistente IA', icon: MessageCircle, active: active === 'asistente' },
+    { label: 'Configuración', icon: Settings, active: active === 'configuracion' },
+  ];
+
+  // Header Actions
+  const headerActions = (
+    <>
+      <button className="px-4 py-2 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 flex items-center gap-2">
+        <Download className="size-4" />
+        Descargar Progreso
+      </button>
+      <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-lg flex items-center gap-2">
+        <MessageCircle className="size-4" />
+        Contactar Maestra
+      </button>
+    </>
+  );
+
+  // Filters
+  const filters = (
+    <>
+      <div className="flex-1 relative">
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 size-5" />
+        <input 
+          type="text"
+          placeholder="Buscar clases, materiales, actividades..."
+          className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+        />
+      </div>
+      <select className="px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option>Todas las Clases</option>
+        <option>Completadas</option>
+        <option>Pendientes</option>
+        <option>Favoritas</option>
+      </select>
+      <select className="px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option>Este Mes</option>
+        <option>Últimos 3 Meses</option>
+        <option>Todo el Tiempo</option>
+      </select>
+    </>
+  );
+
   return (
-    <div className="min-h-screen w-full bg-gray-50 text-gray-900">
-      <HeaderBar title="Mastersteps • Padres" subtitle="Acompaña el crecimiento espiritual de tu hijo" />
-      
-      <div className="mx-auto max-w-7xl px-4 py-6 grid grid-cols-12 gap-6">
-        <aside className="col-span-12 md:col-span-3 lg:col-span-2">
-          <SidebarNav items={sidebarNavItems} />
-        </aside>
-
-        <main className="col-span-12 md:col-span-9 lg:col-span-10 space-y-6">
-          {active === 'inicio' && (
-            <>
-              {/* Próxima Clase */}
-              <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className={`${components.card.elevated} col-span-2 rounded-2xl border-0 overflow-hidden`}>
-                  <div className="p-6 flex items-center justify-between border-b border-gray-100">
-                    <h3 className="text-xl font-bold text-gray-900">Próxima Clase Dominical</h3>
-                    <Clock className="size-5 text-gray-400" />
+    <UnifiedDashboardLayout
+      sidebarItems={sidebarItems}
+      title={`Bienvenido, ${state.user?.name || 'Padre/Madre'}`}
+      subtitle={`Dashboard de Padres - Acompaña el crecimiento espiritual de ${childProgress.name}`}
+      headerActions={headerActions}
+      filters={filters}
+    >
+      {active === 'inicio' && (
+        <>
+          {/* Tarjetas de estadísticas del progreso */}
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {[
+              {
+                title: "Insignias Obtenidas",
+                value: childProgress.badges,
+                change: "+2 esta semana",
+                changeType: "positive",
+                icon: "🏆",
+                color: "from-yellow-500 to-yellow-600",
+                description: "Logros desbloqueados"
+              },
+              {
+                title: "Clases Completadas", 
+                value: childProgress.classesViewed,
+                change: "92% progreso",
+                changeType: "positive",
+                icon: "📚",
+                color: "from-blue-500 to-blue-600",
+                description: "Este trimestre"
+              },
+              {
+                title: "Tareas Realizadas",
+                value: childProgress.tasksCompleted,
+                change: "+3 esta semana",
+                changeType: "positive", 
+                icon: "✅",
+                color: "from-green-500 to-green-600",
+                description: "Actividades completadas"
+              },
+              {
+                title: "Tiempo de Estudio",
+                value: "24h",
+                change: "+4h esta semana",
+                changeType: "positive",
+                icon: "⏰",
+                color: "from-purple-500 to-purple-600",
+                description: "Horas invertidas"
+              }
+            ].map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-200"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`size-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center text-white text-xl shadow-md`}>
+                    {stat.icon}
                   </div>
-                  <div className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div 
-                        className="size-16 rounded-2xl flex items-center justify-center shadow-lg"
-                        style={{ background: gradients.hero }}
-                      >
-                        <Play className="size-8 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-2xl font-bold text-gray-900 mb-2">{upcomingClass.title}</h4>
-                        <p className="text-gray-600 mb-3 text-lg">{upcomingClass.topic}</p>
-                        <p className="text-sm text-gray-500 mb-4">{upcomingClass.date}</p>
-                        <motion.button 
-                          className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg"
-                          style={{ background: gradients.hero }}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          Conectarse a la clase
-                        </motion.button>
-                      </div>
+                  <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                    stat.changeType === 'positive' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                  }`}>
+                    {stat.change}
+                  </span>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</h3>
+                <p className="text-sm font-medium text-gray-900 mb-1">{stat.title}</p>
+                <p className="text-xs text-gray-500">{stat.description}</p>
+              </motion.div>
+            ))}
+          </section>
+
+          {/* Próxima clase y progreso */}
+          <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            {/* Próxima Clase */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Próxima Clase Dominical</h3>
+                  <p className="text-sm text-gray-600">{upcomingClass.date}</p>
+                </div>
+                <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
+                  En 2 días
+                </span>
+              </div>
+              <div className="aspect-video w-full rounded-xl bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center mb-4">
+                <motion.button 
+                  className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/90 shadow-lg hover:shadow-xl transition-all duration-200"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Play className="size-5 text-blue-600" />
+                  <span className="text-base font-semibold text-gray-900">{upcomingClass.title}</span>
+                </motion.button>
+              </div>
+              <p className="text-sm text-gray-600 mb-4">{upcomingClass.topic}</p>
+              <button className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200">
+                Conectarse a la Clase
+              </button>
+            </div>
+
+            {/* Progreso del Niño */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Progreso de {childProgress.name}</h3>
+                  <p className="text-sm text-gray-600">Rendimiento académico y espiritual</p>
+                </div>
+                <Award className="size-5 text-yellow-600" />
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Asistencia a Clases</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-full bg-green-500 rounded-full" style={{ width: '92%' }}></div>
                     </div>
+                    <span className="text-sm font-bold text-green-600">92%</span>
                   </div>
                 </div>
-
-                {/* Progreso del niño */}
-                <div className={`${components.card.elevated} rounded-2xl border-0 overflow-hidden`}>
-                  <div className="p-6 border-b border-gray-100">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-bold text-gray-900">Progreso de {childProgress.name}</h3>
-                      <div 
-                        className="px-2 py-1 rounded-full text-xs font-bold text-white"
-                        style={{ background: brand.accent }}
-                      >
-                        🏆
-                      </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Participación</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-full bg-blue-500 rounded-full" style={{ width: '88%' }}></div>
                     </div>
-                  </div>
-                  <div className="p-6 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Insignias obtenidas</span>
-                      <span className="flex items-center gap-2 text-lg font-bold">
-                        <Award className="size-5" style={{ color: brand.accent }} />
-                        {childProgress.badges}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Clases vistas</span>
-                      <span className="text-lg font-bold">{childProgress.classesViewed}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Tareas completadas</span>
-                      <span className="flex items-center gap-2 text-lg font-bold">
-                        <CheckCircle2 className="size-5" style={{ color: brand.danger }} />
-                        {childProgress.tasksCompleted}
-                      </span>
-                    </div>
+                    <span className="text-sm font-bold text-blue-600">88%</span>
                   </div>
                 </div>
-              </section>
-
-              {/* Materiales para reforzar */}
-              <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className={`${components.card.elevated} col-span-2 rounded-2xl border-0 overflow-hidden`}>
-                  <div className="p-6 flex items-center justify-between border-b border-gray-100">
-                    <div className="flex items-center gap-3">
-                      <h3 className="text-xl font-bold text-gray-900">Materiales para Reforzar en Casa</h3>
-                      <div 
-                        className="px-2 py-1 rounded-full text-xs font-bold text-white"
-                        style={{ background: brand.accent }}
-                      >
-                        📚
-                      </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Tareas Completadas</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-full bg-purple-500 rounded-full" style={{ width: '95%' }}></div>
                     </div>
-                    <Download className="size-5 text-gray-400" />
+                    <span className="text-sm font-bold text-purple-600">95%</span>
                   </div>
-                  <div className="p-6 grid gap-4">
-                    {materials.map((material, i) => (
-                      <motion.div 
-                        key={i} 
-                        className="flex items-center gap-4 p-4 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200 cursor-pointer"
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                        whileHover={{ y: -2 }}
-                      >
-                        <div 
-                          className="size-12 rounded-xl flex items-center justify-center shadow-md"
-                          style={{ background: gradients.hero }}
-                        >
-                          <material.icon className="size-6 text-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-lg font-semibold text-gray-900 truncate">{material.title}</p>
-                          <p className="text-sm text-gray-500">{material.duration || material.pages || material.questions}</p>
-                        </div>
-                        <motion.button 
-                          className="px-4 py-2 rounded-lg text-sm font-medium border border-gray-200 hover:bg-gray-50"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          {material.type === 'video' ? 'Ver' : material.type === 'pdf' ? 'Descargar' : 'Jugar'}
-                        </motion.button>
-                      </motion.div>
+                </div>
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <p className="text-xs text-gray-500 mb-2">Últimas insignias obtenidas:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {childProgress.recentBadges.map((badge, i) => (
+                      <span key={i} className="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 font-medium">
+                        {badge}
+                      </span>
                     ))}
                   </div>
                 </div>
+              </div>
+            </div>
+          </section>
 
-                {/* Asistente IA */}
-                <div className={`${components.card.elevated} rounded-2xl border-0 overflow-hidden`}>
-                  <div className="p-6 border-b border-gray-100">
-                    <h3 className="text-lg font-bold text-gray-900">Asistente IA</h3>
-                    <p className="text-sm text-gray-500">Preguntas sobre la fe</p>
+          {/* Materiales y Asistente IA */}
+          <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            {/* Materiales para Reforzar */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Materiales para Casa</h3>
+                  <p className="text-sm text-gray-600">Recursos para reforzar el aprendizaje</p>
+                </div>
+                <Download className="size-5 text-gray-400" />
+              </div>
+              <div className="space-y-4">
+                {materials.map((material, i) => (
+                  <div key={i} className="flex items-center gap-4 p-4 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200 cursor-pointer">
+                    <div className="size-12 rounded-xl bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center shadow-md">
+                      <material.icon className="size-6 text-blue-600" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-gray-900">{material.title}</p>
+                      <p className="text-xs text-gray-600">{material.duration || material.pages || material.questions}</p>
+                    </div>
+                    <button className="px-3 py-1 text-xs font-medium rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors">
+                      {material.type === 'video' ? 'Ver' : material.type === 'pdf' ? 'Descargar' : 'Jugar'}
+                    </button>
                   </div>
-                  <div className="p-6 space-y-4">
-                    <div className="p-4 rounded-xl" style={{ background: gradients.card }}>
-                      <p className="text-sm text-gray-600 mb-2">¿Cómo puedo ayudar a mi hijo a memorizar versículos?</p>
-                      <button className="text-sm font-medium" style={{ color: brand.primary }}>
-                        Ver respuesta →
-                      </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Asistente IA */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Asistente IA</h3>
+                  <p className="text-sm text-gray-600">Consejos personalizados para el hogar</p>
+                </div>
+                <MessageCircle className="size-5 text-purple-600" />
+              </div>
+              <div className="space-y-4">
+                <div className="p-4 rounded-xl bg-purple-50 border border-purple-200">
+                  <div className="flex items-start gap-3">
+                    <div className="size-8 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold text-xs">IA</div>
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-700">"¿Cómo puedo ayudar a {childProgress.name} a memorizar versículos bíblicos de manera divertida?"</p>
+                      <button className="text-xs text-purple-600 hover:text-purple-800 mt-2 font-medium">Ver respuesta completa →</button>
                     </div>
-                    <div className="p-4 rounded-xl" style={{ background: gradients.card }}>
-                      <p className="text-sm text-gray-600 mb-2">Actividades para el tiempo en familia</p>
-                      <button className="text-sm font-medium" style={{ color: brand.primary }}>
-                        Explorar →
-                      </button>
-                    </div>
-                    <motion.button 
-                      className="w-full p-4 rounded-xl text-white font-semibold"
-                      style={{ background: gradients.hero }}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      Hacer una pregunta
-                    </motion.button>
                   </div>
                 </div>
-              </section>
-
-              {/* Recordatorios */}
-              <section className={`${components.card.elevated} rounded-2xl border-0 overflow-hidden`}>
-                <div className="p-6 border-b border-gray-100">
-                  <div className="flex items-center gap-3">
-                    <h3 className="text-xl font-bold text-gray-900">Recordatorios de la Semana</h3>
-                    <div 
-                      className="px-2 py-1 rounded-full text-xs font-bold text-white"
-                      style={{ background: brand.accent }}
-                    >
-                      ⏰
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-3">
                   {[
-                    { day: 'Lunes', task: 'Revisar materiales de la clase', time: '7:00 PM' },
-                    { day: 'Miércoles', task: 'Actividad en familia', time: '6:30 PM' },
-                    { day: 'Viernes', task: 'Preparar para el domingo', time: '8:00 PM' }
-                  ].map((reminder, i) => (
-                    <motion.div 
-                      key={i}
-                      className="p-4 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200"
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                    >
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="size-8 rounded-lg bg-gray-100 flex items-center justify-center">
-                          <Bell className="size-4 text-gray-600" />
-                        </div>
-                        <span className="font-semibold text-gray-900">{reminder.day}</span>
-                      </div>
-                      <p className="text-sm text-gray-600 mb-1">{reminder.task}</p>
-                      <p className="text-xs text-gray-500">{reminder.time}</p>
-                    </motion.div>
+                    "Actividades para el tiempo en familia",
+                    "Cómo reforzar los valores aprendidos",
+                    "Ideas para devocionales familiares"
+                  ].map((suggestion, i) => (
+                    <button key={i} className="w-full p-3 text-left rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                      <p className="text-sm text-gray-700">{suggestion}</p>
+                    </button>
                   ))}
                 </div>
-              </section>
-            </>
-          )}
+                <button className="w-full px-4 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all duration-200">
+                  Hacer una Pregunta
+                </button>
+              </div>
+            </div>
+          </section>
 
-          <footer className="text-xs text-gray-500 pt-8 pb-4 text-center">
-            © {new Date().getFullYear()} Mastersteps • Padres. Construyendo pasos firmes en la fe.
-          </footer>
-        </main>
-      </div>
-    </div>
+          {/* Actividades recientes */}
+          <section className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">Actividades Recientes</h3>
+                <p className="text-sm text-gray-600">Últimas interacciones y logros de {childProgress.name}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { activity: "Completó la trivia de parábolas", time: "Hace 2 horas", score: "9/10", type: "quiz" },
+                { activity: "Vio el video 'Los Talentos'", time: "Ayer", duration: "8 min", type: "video" },
+                { activity: "Obtuvo insignia 'Buen Participante'", time: "Hace 2 días", badge: "🏆", type: "achievement" },
+                { activity: "Participó en clase dominical", time: "Hace 3 días", participation: "Alta", type: "class" },
+                { activity: "Completó actividad en casa", time: "Hace 4 días", task: "Dibujo de identidad", type: "homework" },
+                { activity: "Memorizó versículo Juan 3:16", time: "Hace 5 días", verse: "✓", type: "memorization" }
+              ].map((item, i) => (
+                <div key={i} className="p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className={`size-8 rounded-lg flex items-center justify-center text-sm ${
+                      item.type === 'achievement' ? 'bg-yellow-100 text-yellow-700' :
+                      item.type === 'quiz' ? 'bg-blue-100 text-blue-700' :
+                      item.type === 'video' ? 'bg-purple-100 text-purple-700' :
+                      item.type === 'class' ? 'bg-green-100 text-green-700' :
+                      item.type === 'homework' ? 'bg-orange-100 text-orange-700' :
+                      'bg-indigo-100 text-indigo-700'
+                    }`}>
+                      {item.type === 'achievement' ? '🏆' :
+                       item.type === 'quiz' ? '📝' :
+                       item.type === 'video' ? '📹' :
+                       item.type === 'class' ? '👥' :
+                       item.type === 'homework' ? '📝' : '📖'}
+                    </div>
+                    <span className="text-xs text-gray-500">{item.time}</span>
+                  </div>
+                  <p className="text-sm font-medium text-gray-900 mb-1">{item.activity}</p>
+                  <p className="text-xs text-gray-600">
+                    {item.score || item.duration || item.badge || item.participation || item.task || item.verse}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </>
+      )}
+
+      {/* Otros contenidos según el estado activo */}
+      {active !== 'inicio' && (
+        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-200 text-center">
+          <div className="text-6xl mb-4">🚧</div>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Sección en Construcción</h3>
+          <p className="text-gray-600">Esta funcionalidad estará disponible próximamente.</p>
+        </div>
+      )}
+    </UnifiedDashboardLayout>
   );
 }

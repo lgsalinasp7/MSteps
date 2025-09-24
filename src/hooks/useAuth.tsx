@@ -1,10 +1,12 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AuthState, AuthUser, UserRole } from '@/settings/types';
+import { authenticateUser, getUserById } from '@/data/users';
 
 type AuthContextValue = {
   state: AuthState;
   login: (params: { username: string; password: string; preferredRole?: UserRole }) => Promise<void>;
   logout: () => void;
+  restoreSession: () => boolean;
 };
 
 const AUTH_STORAGE_KEY = 'auth_state_v1';
@@ -14,15 +16,18 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AuthState>({ user: null, isAuthenticated: false });
 
-  // Cargar estado del localStorage solo en el cliente
-  useEffect(() => {
+  // NO cargar estado del localStorage automáticamente al inicio
+  // Solo cargar cuando se haga login explícitamente
+  const loadSavedState = useCallback(() => {
     try {
       const raw = localStorage.getItem(AUTH_STORAGE_KEY);
       if (raw) {
         const savedState = JSON.parse(raw) as AuthState;
         setState(savedState);
+        return true;
       }
     } catch {}
+    return false;
   }, []);
 
   useEffect(() => {
@@ -32,20 +37,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [state]);
 
   const login = useCallback(async ({ username, password, preferredRole }: { username: string; password: string; preferredRole?: UserRole }) => {
-    // Simulación local: inferimos rol por nombre o usamos preferredRole si se indica
-    let role: UserRole = 'user';
-    const uname = username.toLowerCase();
-    if (preferredRole) role = preferredRole;
-    else if (uname.includes('admin')) role = 'admin';
-    else if (uname.includes('maestro') || uname.includes('teacher')) role = 'teacher';
-    else if (uname.includes('padre') || uname.includes('parent')) role = 'parent';
-    if (!password) throw new Error('Contraseña requerida');
+    if (!username.trim()) throw new Error('Usuario requerido');
+    if (!password.trim()) throw new Error('Contraseña requerida');
+
+    // Autenticar usuario con la base de datos
+    const authenticatedUser = authenticateUser(username.trim(), password.trim(), preferredRole);
+    
+    if (!authenticatedUser) {
+      if (preferredRole) {
+        throw new Error(`Credenciales incorrectas o no tienes permisos de ${preferredRole === 'admin' ? 'Administrador' : preferredRole === 'teacher' ? 'Maestro' : 'Padre'}`);
+      } else {
+        throw new Error('Usuario o contraseña incorrectos');
+      }
+    }
 
     const user: AuthUser = {
-      id: crypto.randomUUID(),
-      name: username,
-      role,
+      id: authenticatedUser.id,
+      name: authenticatedUser.name,
+      role: authenticatedUser.role,
+      email: authenticatedUser.email,
+      organization: authenticatedUser.organization,
     };
+    
     setState({ user, isAuthenticated: true });
   }, []);
 
@@ -53,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setState({ user: null, isAuthenticated: false });
   }, []);
 
-  const value = useMemo<AuthContextValue>(() => ({ state, login, logout }), [state, login, logout]);
+  const value = useMemo<AuthContextValue>(() => ({ state, login, logout, restoreSession: loadSavedState }), [state, login, logout, loadSavedState]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

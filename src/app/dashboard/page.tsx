@@ -2,14 +2,14 @@
 import React from 'react';
 
 export const dynamic = 'force-dynamic';
-import { RequireAdmin } from '@/components/auth/RequireAdmin';
+import { RequireRole } from '@/components/auth/RequireRole';
 import { MasterstepsAdminDashboard } from '@/components/generated/MasterstepsAdminDashboard';
 
 export default function DashboardPage() {
   return (
-    <RequireAdmin>
+    <RequireRole role="admin">
       <MasterstepsAdminDashboard />
-    </RequireAdmin>
+    </RequireRole>
   );
 }
 
