@@ -1,0 +1,182 @@
+{
+  "common": {
+    "welcome": "Bienvenido",
+    "welcomeF": "Bienvenida",
+    "dashboard": "Dashboard",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "view": "Ver",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar",
+    "settings": "Configuración",
+    "profile": "Perfil",
+    "logout": "Cerrar Sesión",
+    "login": "Iniciar Sesión",
+    "user": "Usuario",
+    "users": "Usuarios",
+    "name": "Nombre",
+    "email": "Email",
+    "organization": "Organización",
+    "status": "Estado",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "yes": "Sí",
+    "no": "No",
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "thisWeek": "Esta semana",
+    "thisMonth": "Este mes",
+    "allTime": "Todo el Tiempo"
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "selectRole": "Selecciona tu rol:",
+    "admin": "Admin",
+    "teacher": "Maestro",
+    "parent": "Padres",
+    "loginButton": "Ingresar",
+    "loginError": "Error al iniciar sesión",
+    "usernameRequired": "Por favor ingresa tu usuario",
+    "passwordRequired": "Por favor ingresa tu contraseña",
+    "invalidCredentials": "Usuario o contraseña incorrectos",
+    "loginSuccess": "Inicio de sesión exitoso",
+    "platformTitle": "Plataforma de Gestión Educativa"
+  },
+  "roles": {
+    "admin": "Administrador",
+    "teacher": "Maestro",
+    "parent": "Padre",
+    "student": "Estudiante"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "classes": "Mis Clases",
+    "newClass": "Nueva Clase",
+    "attendance": "Lista y Asistencia",
+    "aiTools": "Herramientas IA",
+    "notifications": "Notificaciones",
+    "materials": "Materiales",
+    "settings": "Configuración",
+    "profile": "Perfil",
+    "reports": "Reportes",
+    "students": "Estudiantes",
+    "teachers": "Maestros",
+    "parents": "Padres",
+    "schools": "Iglesias",
+    "courses": "Cursos",
+    "analytics": "Analíticas",
+    "users": "Usuarios",
+    "billing": "Facturación",
+    "support": "Soporte",
+    "documentation": "Documentación",
+    "progress": "Progreso"
+  },
+  "dashboard": {
+    "admin": {
+      "title": "Dashboard Administrativo - Vista general del sistema educativo Mastersteps",
+      "totalStudents": "Total Estudiantes",
+      "studentsDescription": "Niños registrados",
+      "activeChurches": "Iglesias Activas",
+      "churchesDescription": "Congregaciones conectadas",
+      "activeCourses": "Cursos Activos",
+      "coursesDescription": "Clases en progreso",
+      "teachers": "Maestros",
+      "teachersDescription": "Educadores certificados",
+      "recentActivity": "Actividad Reciente",
+      "topPerformingChurches": "Iglesias con Mejor Rendimiento",
+      "systemHealth": "Estado del Sistema"
+    },
+    "teacher": {
+      "title": "Dashboard de Maestros - Gestiona tus clases y estudiantes de manera efectiva",
+      "activeStudents": "Estudiantes Activos",
+      "studentsDescription": "En tu grupo principal",
+      "attendanceToday": "Asistencia Hoy",
+      "attendanceDescription": "Estudiantes presentes",
+      "completedClasses": "Clases Completadas",
+      "classesDescription": "Este mes",
+      "pendingWorkshops": "Talleres Pendientes",
+      "workshopsDescription": "Esta semana",
+      "exportList": "Exportar Lista",
+      "newActivity": "Nueva Actividad"
+    },
+    "parent": {
+      "title": "Dashboard de Padres - Acompaña el crecimiento espiritual de {childName}",
+      "badgesEarned": "Insignias Obtenidas",
+      "badgesDescription": "Logros desbloqueados",
+      "completedClasses": "Clases Completadas",
+      "classesDescription": "Este trimestre",
+      "tasksCompleted": "Tareas Realizadas",
+      "tasksDescription": "Actividades completadas",
+      "studyTime": "Tiempo de Estudio",
+      "studyTimeDescription": "Horas invertidas",
+      "weeklyProgress": "+{count} esta semana",
+      "progressPercentage": "{percent}% progreso",
+      "timeThisWeek": "+{hours}h esta semana"
+    }
+  },
+  "stats": {
+    "change": {
+      "positive": "+{value}",
+      "negative": "-{value}",
+      "neutral": "{value}"
+    },
+    "period": {
+      "today": "hoy",
+      "thisWeek": "esta semana",
+      "thisMonth": "este mes",
+      "thisYear": "este año"
+    }
+  },
+  "errors": {
+    "generic": "¡Oops! Algo salió mal",
+    "loadingData": "No pudimos cargar los datos del dashboard.",
+    "tryAgain": "🔄 Intentar de nuevo",
+    "networkError": "Error de conexión",
+    "serverError": "Error del servidor",
+    "notFound": "No encontrado"
+  },
+  "logout": {
+    "title": "Cerrar Sesión",
+    "subtitle": "Confirmar acción",
+    "question": "¿Cerrar sesión?",
+    "description": "Deberás iniciar sesión nuevamente.",
+    "confirm": "Salir",
+    "cancel": "Cancelar"
+  },
+  "header": {
+    "searchPlaceholder": "Buscar clases, estudiantes, materiales...",
+    "notifications": "Notificaciones",
+    "userMenu": "Menú de usuario",
+    "systemStatus": "Sistema activo",
+    "version": "v2.0"
+  },
+  "sidebar": {
+    "systemActive": "Sistema activo",
+    "version": "v2.0",
+    "organization": "Organización",
+    "status": "Estado",
+    "active": "Activo"
+  },
+  "filters": {
+    "all": "Todos",
+    "active": "Activos",
+    "inactive": "Inactivos",
+    "recent": "Recientes",
+    "period": "Período",
+    "thisMonth": "Este Mes",
+    "lastThreeMonths": "Últimos 3 Meses",
+    "thisYear": "Este Año"
+  }
+}
+

@@ -3,9 +3,11 @@ import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Play, Download, FileText, Calendar, Users, CheckCircle2, Search, ClipboardList, Pencil, Send, Lightbulb, BrainCircuit, Video, NotebookPen, LayoutGrid, GraduationCap, ListChecks, Wand2, BellRing, Settings, Plus } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslations, useDashboardTranslations, useCommonTranslations, useNavigationTranslations } from '@/hooks/useTranslations';
 import { brand, gradients, components, utils } from '@/lib/design-system';
 import { UnifiedDashboardLayout } from '@/components/shared/UnifiedDashboardLayout';
 import { NavItem } from '@/components/shared/SidebarNav';
+import { YouTubeVideo } from '@/components/shared/YouTubeVideo';
 
 type Kid = {
   id: string;
@@ -69,19 +71,22 @@ const workshops = [{
 
 export const TeacherDashboard: React.FC = () => {
   const { state } = useAuth();
+  const t = useDashboardTranslations();
+  const common = useCommonTranslations();
+  const nav = useNavigationTranslations();
   const [kids, setKids] = useState<Kid[]>(sampleKids);
   const presentCount = useMemo(() => kids.filter(k => k.present).length, [kids]);
   const [active, setActive] = useState<string>('panel');
 
   const sidebarItems: NavItem[] = [
-    { label: 'Dashboard', icon: LayoutGrid, active: active === 'panel' },
-    { label: 'Mis Clases', icon: BookOpen, active: active === 'clase' },
-    { label: 'Nueva Clase', icon: Calendar, active: active === 'agenda' },
-    { label: 'Lista y Asistencia', icon: ListChecks, active: active === 'asistencia' },
-    { label: 'Herramientas IA', icon: Wand2, active: active === 'herramientas' },
-    { label: 'Notificaciones', icon: BellRing, active: active === 'notificaciones', badge: 3 },
-    { label: 'Materiales', icon: GraduationCap, active: active === 'recursos' },
-    { label: 'Configuración', icon: Settings, active: active === 'ajustes' },
+    { label: nav('dashboard'), icon: LayoutGrid, active: active === 'panel' },
+    { label: nav('classes'), icon: BookOpen, active: active === 'clase' },
+    { label: nav('newClass'), icon: Calendar, active: active === 'agenda' },
+    { label: nav('attendance'), icon: ListChecks, active: active === 'asistencia' },
+    { label: nav('aiTools'), icon: Wand2, active: active === 'herramientas' },
+    { label: nav('notifications'), icon: BellRing, active: active === 'notificaciones', badge: 3 },
+    { label: nav('materials'), icon: GraduationCap, active: active === 'recursos' },
+    { label: nav('settings'), icon: Settings, active: active === 'ajustes' },
   ];
 
   const togglePresent = (id: string) => setKids(prev => prev.map(k => k.id === id ? { ...k, present: !k.present } : k));
@@ -92,11 +97,11 @@ export const TeacherDashboard: React.FC = () => {
     <>
       <button className="px-4 py-2 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 flex items-center gap-2">
         <Download className="size-4" />
-        Exportar Lista
+{t('teacher.exportList')}
       </button>
       <button className="px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-200 shadow-lg flex items-center gap-2">
         <Plus className="size-4" />
-        Nueva Actividad
+{t('teacher.newActivity')}
       </button>
     </>
   );
@@ -129,8 +134,8 @@ export const TeacherDashboard: React.FC = () => {
   return (
     <UnifiedDashboardLayout
       sidebarItems={sidebarItems}
-      title={`Bienvenida, ${state.user?.name || 'Maestra'}`}
-      subtitle="Dashboard de Maestros - Gestiona tus clases y estudiantes de manera efectiva"
+      title={`${common('welcomeF')}, ${state.user?.name || t('teacher.title')}`}
+      subtitle={t('teacher.title')}
       headerActions={headerActions}
       filters={filters}
     >
@@ -140,40 +145,40 @@ export const TeacherDashboard: React.FC = () => {
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {[
               {
-                title: "Estudiantes Activos",
+                title: t('teacher.activeStudents'),
                 value: kids.length,
                 change: "+2",
                 changeType: "positive",
                 icon: "👥",
                 color: "from-orange-500 to-orange-600",
-                description: "En tu grupo principal"
+                description: t('teacher.studentsDescription')
               },
               {
-                title: "Asistencia Hoy", 
+                title: t('teacher.attendanceToday'), 
                 value: presentCount,
                 change: `${Math.round((presentCount / kids.length) * 100)}%`,
                 changeType: "positive",
                 icon: "✅",
                 color: "from-green-500 to-green-600",
-                description: "Estudiantes presentes"
+                description: t('teacher.attendanceDescription')
               },
               {
-                title: "Clases Completadas",
+                title: t('teacher.completedClasses'),
                 value: "12",
                 change: "+1",
                 changeType: "positive", 
                 icon: "📚",
                 color: "from-blue-500 to-blue-600",
-                description: "Este mes"
+                description: t('teacher.classesDescription')
               },
               {
-                title: "Talleres Pendientes",
+                title: t('teacher.pendingWorkshops'),
                 value: "3",
                 change: "Próximamente",
                 changeType: "neutral",
                 icon: "🎨",
                 color: "from-purple-500 to-purple-600",
-                description: "Esta semana"
+                description: t('teacher.workshopsDescription')
               }
             ].map((stat, i) => (
               <motion.div
@@ -215,15 +220,13 @@ export const TeacherDashboard: React.FC = () => {
                   En 2 días
                 </span>
               </div>
-              <div className="aspect-video w-full rounded-xl bg-gradient-to-br from-orange-100 to-blue-100 flex items-center justify-center mb-4">
-                <motion.button 
-                  className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/90 shadow-lg hover:shadow-xl transition-all duration-200"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Play className="size-5 text-orange-600" />
-                  <span className="text-base font-semibold text-gray-900">Mi identidad en Cristo (12 min)</span>
-                </motion.button>
+              <div className="mb-4">
+                <YouTubeVideo
+                  videoId="LoVZpF73YsA"
+                  title="Mi identidad en Cristo - Clase Dominical"
+                  className="w-full"
+                  showTitle={false}
+                />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <button className="p-3 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200 flex items-center gap-2 text-sm font-medium">

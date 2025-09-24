@@ -1,9 +1,9 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslations } from '@/hooks/useTranslations';
 import { brand, gradients, components, utils } from '@/lib/design-system';
-import { LogoutModal } from './LogoutModal';
 
 export type NavItem = {
   label: string;
@@ -15,13 +15,14 @@ export type NavItem = {
 
 export function SidebarNav({ items }: { items: NavItem[] }) {
   const { state } = useAuth();
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const t = useTranslations('sidebar');
+  const roles = useTranslations('roles');
   
   const getRoleDisplayName = () => {
     switch(state.user?.role) {
-      case 'admin': return 'Administrador';
-      case 'teacher': return 'Maestro';
-      case 'parent': return 'Padre';
+      case 'admin': return roles('admin');
+      case 'teacher': return roles('teacher');
+      case 'parent': return roles('parent');
       default: return 'Usuario';
     }
   };
@@ -61,7 +62,7 @@ export function SidebarNav({ items }: { items: NavItem[] }) {
               </div>
               <div className="space-y-2 text-xs">
                 <div className="flex justify-between">
-                  <span className="text-blue-200">Organización</span>
+                  <span className="text-blue-200">{t('organization')}</span>
                   <span className="text-white font-semibold text-right text-xs">{state.user?.organization || 'N/A'}</span>
                 </div>
                 <div className="flex justify-between">
@@ -69,15 +70,15 @@ export function SidebarNav({ items }: { items: NavItem[] }) {
                   <span className="text-orange-300 font-semibold text-xs truncate max-w-24">{state.user?.email || 'N/A'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-blue-200">Estado</span>
-                  <span className="text-green-300 font-semibold">Activo</span>
+                  <span className="text-blue-200">{t('status')}</span>
+                  <span className="text-green-300 font-semibold">{t('active')}</span>
                 </div>
               </div>
             </div>
           </div>
       
-      {/* Items de navegación */}
-      <div className="flex-1 px-4 py-2">
+          {/* Items de navegación */}
+          <div className="flex-1 px-4 py-2">
         {items.map((item, idx) => (
           <a 
             key={idx}
@@ -101,33 +102,16 @@ export function SidebarNav({ items }: { items: NavItem[] }) {
         ))}
       </div>
       
-      {/* Botón de cerrar sesión */}
+      {/* Footer con estado del sistema */}
       <div className="p-4 border-t border-blue-500/30">
-        <button 
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 mb-3 text-red-200 hover:bg-red-500/20 hover:text-red-100"
-          onClick={() => setShowLogoutModal(true)}
-        >
-          <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-          </svg>
-          <span>Cerrar Sesión</span>
-        </button>
-        
-        {/* Footer con estado del sistema */}
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-2 text-blue-200">
             <div className="size-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span>Sistema activo</span>
+            <span>{t('systemActive')}</span>
           </div>
           <span className="text-blue-300">v2.0</span>
         </div>
       </div>
-
-      {/* Modal de confirmación de logout */}
-      <LogoutModal 
-        isOpen={showLogoutModal} 
-        onClose={() => setShowLogoutModal(false)} 
-      />
     </nav>
   );
 }

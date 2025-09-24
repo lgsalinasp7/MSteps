@@ -1,3 +1,4 @@
+"use client";
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AuthState, AuthUser, UserRole } from '@/settings/types';
 import { authenticateUser, getUserById } from '@/data/users';

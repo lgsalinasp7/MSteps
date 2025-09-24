@@ -2,12 +2,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bell, Search, User, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslations, useCommonTranslations, useNavigationTranslations } from '@/hooks/useTranslations';
+import { LanguageSelector } from './LanguageSelector';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoutModal } from './LogoutModal';
 
 export function GlobalHeader() {
   const { logout, state } = useAuth();
+  const t = useTranslations('header');
+  const common = useCommonTranslations();
+  const nav = useNavigationTranslations();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -59,13 +64,13 @@ export function GlobalHeader() {
           <div className="flex items-center gap-2 sm:gap-4 min-w-0">
             <div className="flex items-center gap-2 sm:gap-3">
               {/* Logo sin fondo */}
-              <div className="size-10 sm:size-12 rounded-xl flex items-center justify-center">
+              <div className="size-12 sm:size-16 rounded-xl flex items-center justify-center">
                 <Image 
                   src="/logo.png" 
                   alt="Mastersteps Logo" 
-                  width={24} 
-                  height={24} 
-                  className="object-contain sm:w-8 sm:h-8"
+                  width={32} 
+                  height={32} 
+                  className="object-contain sm:w-12 sm:h-12"
                 />
               </div>
               
@@ -82,7 +87,7 @@ export function GlobalHeader() {
             <div className="relative w-full">
               <Search className="size-5 absolute left-4 top-1/2 -translate-y-1/2 text-blue-200" />
               <input 
-                placeholder="Buscar clases, estudiantes, materiales..." 
+                placeholder={t('searchPlaceholder')}
                 className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-blue-100 focus:bg-white/20 focus:border-white/40 focus:outline-none transition-all duration-200"
               />
             </div>
@@ -90,6 +95,8 @@ export function GlobalHeader() {
           
           {/* Área de usuario */}
           <div className="flex items-center gap-2 sm:gap-4">
+            {/* Language Selector */}
+            <LanguageSelector />
             {/* Notificaciones - Oculto en móvil pequeño */}
             <button className="relative p-2 sm:p-3 rounded-xl hover:bg-white/20 transition-all duration-200">
               <Bell className="size-4 sm:size-5 text-white" />
@@ -144,7 +151,7 @@ export function GlobalHeader() {
                         <User className="size-4 text-blue-600" />
                       </div>
                       <div>
-                        <p className="text-gray-900">Mi Perfil</p>
+                        <p className="text-gray-900">{nav('profile')}</p>
                         <p className="text-xs text-gray-500">Información personal</p>
                       </div>
                     </Link>
@@ -153,7 +160,7 @@ export function GlobalHeader() {
                         <Settings className="size-4 text-orange-600" />
                       </div>
                       <div>
-                        <p className="text-gray-900">Configuración</p>
+                        <p className="text-gray-900">{nav('settings')}</p>
                         <p className="text-xs text-gray-500">Preferencias del sistema</p>
                       </div>
                     </Link>
@@ -169,7 +176,7 @@ export function GlobalHeader() {
                         <LogOut className="size-4 text-red-600" />
                       </div>
                       <div>
-                        <p className="text-red-600">Cerrar Sesión</p>
+                        <p className="text-red-600">{common('logout')}</p>
                         <p className="text-xs text-red-400">Salir del sistema</p>
                       </div>
                     </button>

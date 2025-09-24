@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { useAuthTranslations, useCommonTranslations } from '@/hooks/useTranslations';
+import { LanguageSelector } from '@/components/shared/LanguageSelector';
 import { Lock, Mail } from 'lucide-react';
 import Image from 'next/image';
 
 export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
   const { login } = useAuth();
+  const t = useAuthTranslations();
+  const common = useCommonTranslations();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -17,12 +21,12 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
     
     // Validaciones estrictas
     if (!username.trim()) {
-      setError('Por favor ingresa tu usuario');
+      setError(t('usernameRequired'));
       return;
     }
     
     if (!password.trim()) {
-      setError('Por favor ingresa tu contraseña');
+      setError(t('passwordRequired'));
       return;
     }
     
@@ -36,7 +40,7 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
       // Llamar al callback después de login exitoso
       onLoginSuccess?.();
     } catch (err) {
-      setError((err as Error).message || 'Error al iniciar sesión');
+      setError((err as Error).message || t('loginError'));
     } finally {
       setLoading(false);
     }
@@ -49,26 +53,31 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
         <Image src="/fondo-login.png" alt="Fondo login" fill priority className="object-cover" />
       </div>
       
+      {/* Language Selector */}
+      <div className="absolute top-4 right-4 z-20">
+        <LanguageSelector />
+      </div>
+      
       <div className="w-full max-w-lg relative z-10">
         {/* Header with prominent logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl shadow-2xl mb-4" style={{ backgroundColor: '#0B317D' }}>
+          <div className="inline-flex items-center justify-center w-32 h-32 rounded-2xl shadow-2xl mb-4" style={{ backgroundColor: '#0B317D' }}>
             <Image 
               src="/logo.png" 
               alt="Mastersteps Logo" 
-              width={64} 
-              height={64} 
+              width={80} 
+              height={80} 
               className="object-contain"
             />
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">Mastersteps</h1>
-          <p className="text-blue-100 text-lg">Plataforma de Gestión Educativa</p>
+          <p className="text-blue-100 text-lg">{t('platformTitle')}</p>
         </div>
         
         <div className="rounded-2xl bg-white/95 backdrop-blur-sm shadow-2xl border border-white/20 overflow-hidden relative z-20">
           <div className="p-8">
             <div className="text-center mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Selecciona tu Rol</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">{t('selectRole')}</h2>
                   <div className="flex gap-3 justify-center">
                     <button 
                       type="button" 
@@ -83,7 +92,7 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
                       }`}
                       style={role === 'admin' ? { backgroundColor: '#0B317D' } : {}}
                     >
-                      👑 Admin
+                      👑 {t('admin')}
                     </button>
                     <button 
                       type="button" 
@@ -98,7 +107,7 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
                       }`}
                       style={role === 'teacher' ? { backgroundColor: '#FFB33C' } : {}}
                     >
-                      📚 Maestro
+                      📚 {t('teacher')}
                     </button>
                     <button 
                       type="button" 
@@ -113,7 +122,7 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
                       }`}
                       style={role === 'parent' ? { backgroundColor: '#f04770' } : {}}
                     >
-                      👨‍👩‍👧‍👦 Padres
+                      👨‍👩‍👧‍👦 {t('parent')}
                     </button>
                   </div>
             </div>
@@ -124,7 +133,7 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
               ) : null}
               
               <div>
-                <label htmlFor="username" className="block text-sm font-medium mb-2 text-gray-700">Usuario</label>
+                <label htmlFor="username" className="block text-sm font-medium mb-2 text-gray-700">{t('username')}</label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4 pointer-events-none" />
                       <input
@@ -151,7 +160,7 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
               </div>
               
               <div>
-                <label htmlFor="password" className="block text-sm font-medium mb-2 text-gray-700">Contraseña</label>
+                <label htmlFor="password" className="block text-sm font-medium mb-2 text-gray-700">{t('password')}</label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4 pointer-events-none" />
                   <input
@@ -194,11 +203,11 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
                   e.currentTarget.style.backgroundColor = '#0B317D';
                 }}
               >
-                {loading ? 'Ingresando…' : '🚀 Ingresar al Sistema'}
+                {loading ? `${t('loginButton')}...` : `🚀 ${t('loginButton')}`}
               </button>
               
               <p className="text-xs text-gray-500 text-center">
-                Selecciona tu rol y completa tus credenciales para acceder
+                {t('selectRole')} y completa tus credenciales para acceder
               </p>
             </form>
         </div>

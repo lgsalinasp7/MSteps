@@ -1,0 +1,14 @@
+{
+  "/api/dashboard/attendance/route": "/api/dashboard/attendance",
+  "/api/dashboard/participation/route": "/api/dashboard/participation",
+  "/api/dashboard/stats/route": "/api/dashboard/stats",
+  "/_not-found/page": "/_not-found",
+  "/page": "/",
+  "/[locale]/login/page": "/[locale]/login",
+  "/[locale]/maestros/page": "/[locale]/maestros",
+  "/[locale]/padres/page": "/[locale]/padres",
+  "/[locale]/settings/page": "/[locale]/settings",
+  "/[locale]/page": "/[locale]",
+  "/[locale]/profile/page": "/[locale]/profile",
+  "/[locale]/dashboard/page": "/[locale]/dashboard"
+}

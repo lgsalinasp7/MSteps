@@ -8,11 +8,17 @@ import { NavItem } from '@/components/shared/SidebarNav';
 import { AttendanceArea, ParticipationBars } from '@/components/shared/Charts';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { brand, gradients, components, utils } from '@/lib/design-system';
+import { useDashboardTranslations, useCommonTranslations, useErrorTranslations, useTranslations } from '@/hooks/useTranslations';
 
 // @component: MasterstepsAdminDashboard
 export const MasterstepsAdminDashboard: React.FC = () => {
   const { state } = useAuth();
   const { loading, error, stats, asistencia, participacion } = useDashboardData();
+  const t = useDashboardTranslations();
+  const common = useCommonTranslations();
+  const errorT = useErrorTranslations();
+  const nav = useTranslations('navigation');
+  const filtersT = useTranslations('filters');
 
   const uiStats = useMemo(() => {
     const iconByLabel: Record<string, any> = {
@@ -44,28 +50,28 @@ export const MasterstepsAdminDashboard: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-400 via-blue-300 to-orange-300">
       <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-red-200 text-center max-w-md">
         <div className="text-red-500 text-6xl mb-4">⚠️</div>
-        <h3 className="text-xl font-bold text-gray-900 mb-2">¡Oops! Algo salió mal</h3>
-        <p className="text-gray-600 mb-4">No pudimos cargar los datos del dashboard.</p>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">{errorT('generic')}</h3>
+        <p className="text-gray-600 mb-4">{errorT('loadingData')}</p>
         <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">{error}</p>
         <button 
           onClick={() => window.location.reload()} 
           className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
         >
-          🔄 Intentar de nuevo
+          {errorT('tryAgain')}
         </button>
           </div>
           </div>
   );
 
   const sidebarItems: NavItem[] = [
-    { icon: BarChart3, label: 'Dashboard', active: true },
-    { icon: UploadCloud, label: 'Contenidos' },
-    { icon: Calendar, label: 'Automatizaciones' },
-    { icon: Users, label: 'Usuarios' },
-    { icon: BookOpen, label: 'Reportes' },
-    { icon: CreditCard, label: 'Membresías' },
-    { icon: Settings, label: 'Configuración' },
-    { icon: MessageSquare, label: 'Asistente IA' },
+    { icon: BarChart3, label: nav('dashboard'), active: true },
+    { icon: UploadCloud, label: nav('materials') },
+    { icon: Calendar, label: nav('analytics') },
+    { icon: Users, label: nav('users') },
+    { icon: BookOpen, label: nav('reports') },
+    { icon: CreditCard, label: nav('billing') },
+    { icon: Settings, label: nav('settings') },
+    { icon: MessageSquare, label: nav('aiTools') },
   ];
 
   // Header Actions
@@ -75,12 +81,12 @@ export const MasterstepsAdminDashboard: React.FC = () => {
         <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-        <span className="hidden sm:inline">Exportar Reporte</span>
-        <span className="sm:hidden">Exportar</span>
+        <span className="hidden sm:inline">{common('export')} Reporte</span>
+        <span className="sm:hidden">{common('export')}</span>
       </button>
       <button className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-200 shadow-lg flex items-center gap-2 text-sm">
         <span className="text-lg">+</span>
-        <span className="hidden sm:inline">Nueva Iglesia</span>
+        <span className="hidden sm:inline">Nueva {nav('schools')}</span>
         <span className="sm:hidden">Nueva</span>
       </button>
     </>
@@ -98,16 +104,16 @@ export const MasterstepsAdminDashboard: React.FC = () => {
         />
       </div>
       <select className="px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm min-w-0 flex-shrink-0">
-        <option>Todas las Iglesias</option>
-        <option>Activas</option>
-        <option>Inactivas</option>
-        <option>Nuevas</option>
+        <option>{filtersT('all')} las {nav('schools')}</option>
+        <option>{filtersT('active')}</option>
+        <option>{filtersT('inactive')}</option>
+        <option>{filtersT('recent')}</option>
       </select>
       <select className="px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm min-w-0 flex-shrink-0">
-        <option>Este Mes</option>
-        <option>Últimos 3 Meses</option>
-        <option>Este Año</option>
-        <option>Todo el Tiempo</option>
+        <option>{filtersT('thisMonth')}</option>
+        <option>{filtersT('lastThreeMonths')}</option>
+        <option>{filtersT('thisYear')}</option>
+        <option>{common('allTime')}</option>
       </select>
     </>
   );
@@ -115,8 +121,8 @@ export const MasterstepsAdminDashboard: React.FC = () => {
   return (
     <UnifiedDashboardLayout
       sidebarItems={sidebarItems}
-      title={`Bienvenido, ${state.user?.name || 'Administrador'}`}
-      subtitle="Dashboard Administrativo - Vista general del sistema educativo Mastersteps"
+      title={`${common('welcome')}, ${state.user?.name || t('admin.title')}`}
+      subtitle={t('admin.title')}
       headerActions={headerActions}
       filters={filters}
     >
@@ -124,40 +130,40 @@ export const MasterstepsAdminDashboard: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
         {[
           {
-            title: "Total Estudiantes",
+            title: t('admin.totalStudents'),
             value: "2,847",
             change: "+12%",
             changeType: "positive",
             icon: "👥",
             color: "from-blue-500 to-blue-600",
-            description: "Niños registrados"
+            description: t('admin.studentsDescription')
           },
           {
-            title: "Iglesias Activas", 
+            title: t('admin.activeChurches'), 
             value: "45",
             change: "+3",
             changeType: "positive",
             icon: "⛪",
             color: "from-green-500 to-green-600",
-            description: "Congregaciones conectadas"
+            description: t('admin.churchesDescription')
           },
           {
-            title: "Cursos Activos",
+            title: t('admin.activeCourses'),
             value: "128",
             change: "+8",
             changeType: "positive", 
             icon: "📚",
             color: "from-orange-500 to-orange-600",
-            description: "Clases en progreso"
+            description: t('admin.coursesDescription')
           },
           {
-            title: "Maestros",
+            title: t('admin.teachers'),
             value: "167",
             change: "+5%",
             changeType: "positive",
             icon: "🎓",
             color: "from-purple-500 to-purple-600",
-            description: "Educadores certificados"
+            description: t('admin.teachersDescription')
           }
         ].map((stat, i) => (
           <motion.div

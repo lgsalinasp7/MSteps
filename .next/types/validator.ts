@@ -47,46 +47,52 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 }
 
 
-// Validate ../../src/app/dashboard/page.tsx
+// Validate ../../src/app/[locale]/dashboard/page.tsx
 {
-  const handler = {} as typeof import("../../src/app/dashboard/page.js")
-  handler satisfies AppPageConfig<"/dashboard">
+  const handler = {} as typeof import("../../src/app/[locale]/dashboard/page.js")
+  handler satisfies AppPageConfig<"/[locale]/dashboard">
 }
 
-// Validate ../../src/app/login/page.tsx
+// Validate ../../src/app/[locale]/login/page.tsx
 {
-  const handler = {} as typeof import("../../src/app/login/page.js")
-  handler satisfies AppPageConfig<"/login">
+  const handler = {} as typeof import("../../src/app/[locale]/login/page.js")
+  handler satisfies AppPageConfig<"/[locale]/login">
 }
 
-// Validate ../../src/app/maestros/page.tsx
+// Validate ../../src/app/[locale]/maestros/page.tsx
 {
-  const handler = {} as typeof import("../../src/app/maestros/page.js")
-  handler satisfies AppPageConfig<"/maestros">
+  const handler = {} as typeof import("../../src/app/[locale]/maestros/page.js")
+  handler satisfies AppPageConfig<"/[locale]/maestros">
 }
 
-// Validate ../../src/app/padres/page.tsx
+// Validate ../../src/app/[locale]/padres/page.tsx
 {
-  const handler = {} as typeof import("../../src/app/padres/page.js")
-  handler satisfies AppPageConfig<"/padres">
+  const handler = {} as typeof import("../../src/app/[locale]/padres/page.js")
+  handler satisfies AppPageConfig<"/[locale]/padres">
+}
+
+// Validate ../../src/app/[locale]/page.tsx
+{
+  const handler = {} as typeof import("../../src/app/[locale]/page.js")
+  handler satisfies AppPageConfig<"/[locale]">
+}
+
+// Validate ../../src/app/[locale]/profile/page.tsx
+{
+  const handler = {} as typeof import("../../src/app/[locale]/profile/page.js")
+  handler satisfies AppPageConfig<"/[locale]/profile">
+}
+
+// Validate ../../src/app/[locale]/settings/page.tsx
+{
+  const handler = {} as typeof import("../../src/app/[locale]/settings/page.js")
+  handler satisfies AppPageConfig<"/[locale]/settings">
 }
 
 // Validate ../../src/app/page.tsx
 {
   const handler = {} as typeof import("../../src/app/page.js")
   handler satisfies AppPageConfig<"/">
-}
-
-// Validate ../../src/app/profile/page.tsx
-{
-  const handler = {} as typeof import("../../src/app/profile/page.js")
-  handler satisfies AppPageConfig<"/profile">
-}
-
-// Validate ../../src/app/settings/page.tsx
-{
-  const handler = {} as typeof import("../../src/app/settings/page.js")
-  handler satisfies AppPageConfig<"/settings">
 }
 
 // Validate ../../src/app/api/dashboard/attendance/route.ts
@@ -111,10 +117,16 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 
 
 
-// Validate ../../src/app/dashboard/layout.tsx
+// Validate ../../src/app/[locale]/dashboard/layout.tsx
 {
-  const handler = {} as typeof import("../../src/app/dashboard/layout.js")
-  handler satisfies LayoutConfig<"/dashboard">
+  const handler = {} as typeof import("../../src/app/[locale]/dashboard/layout.js")
+  handler satisfies LayoutConfig<"/[locale]/dashboard">
+}
+
+// Validate ../../src/app/[locale]/layout.tsx
+{
+  const handler = {} as typeof import("../../src/app/[locale]/layout.js")
+  handler satisfies LayoutConfig<"/[locale]">
 }
 
 // Validate ../../src/app/layout.tsx

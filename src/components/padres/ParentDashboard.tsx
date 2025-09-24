@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Calendar, Video, Download, Award, CheckCircle2, Clock, MessageCircle, Play, FileText, Star, Bell, Home, Settings, BarChart3, Search, Plus } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslations, useDashboardTranslations, useCommonTranslations, useNavigationTranslations } from '@/hooks/useTranslations';
 import { brand, gradients, components, utils } from '@/lib/design-system';
 import { UnifiedDashboardLayout } from '@/components/shared/UnifiedDashboardLayout';
 import { NavItem } from '@/components/shared/SidebarNav';
+import { YouTubeVideo } from '@/components/shared/YouTubeVideo';
 
 const childProgress = {
   name: 'Sofía',
@@ -30,15 +32,18 @@ const materials = [
 
 export function ParentDashboard() {
   const { state } = useAuth();
+  const t = useDashboardTranslations();
+  const common = useCommonTranslations();
+  const nav = useNavigationTranslations();
   const [active, setActive] = useState<string>('inicio');
 
   const sidebarItems: NavItem[] = [
-    { label: 'Dashboard', icon: Home, active: active === 'inicio' },
-    { label: 'Clases', icon: Calendar, active: active === 'clases' },
-    { label: 'Progreso', icon: BarChart3, active: active === 'progreso', badge: childProgress.badges },
-    { label: 'Materiales', icon: Download, active: active === 'materiales' },
-    { label: 'Asistente IA', icon: MessageCircle, active: active === 'asistente' },
-    { label: 'Configuración', icon: Settings, active: active === 'configuracion' },
+    { label: nav('dashboard'), icon: Home, active: active === 'inicio' },
+    { label: nav('classes'), icon: Calendar, active: active === 'clases' },
+    { label: nav('progress'), icon: BarChart3, active: active === 'progreso', badge: childProgress.badges },
+    { label: nav('materials'), icon: Download, active: active === 'materiales' },
+    { label: nav('aiTools'), icon: MessageCircle, active: active === 'asistente' },
+    { label: nav('settings'), icon: Settings, active: active === 'configuracion' },
   ];
 
   // Header Actions
@@ -85,8 +90,8 @@ export function ParentDashboard() {
   return (
     <UnifiedDashboardLayout
       sidebarItems={sidebarItems}
-      title={`Bienvenido, ${state.user?.name || 'Padre/Madre'}`}
-      subtitle={`Dashboard de Padres - Acompaña el crecimiento espiritual de ${childProgress.name}`}
+      title={`${common('welcome')}, ${state.user?.name || 'Padre/Madre'}`}
+      subtitle={t('parent.title', { childName: childProgress.name })}
       headerActions={headerActions}
       filters={filters}
     >
@@ -169,15 +174,12 @@ export function ParentDashboard() {
                   En 2 días
                 </span>
               </div>
-              <div className="aspect-video w-full rounded-xl bg-gradient-to-br from-blue-100 to-orange-100 flex items-center justify-center mb-4">
-                <motion.button 
-                  className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/90 shadow-lg hover:shadow-xl transition-all duration-200"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Play className="size-5 text-blue-600" />
-                  <span className="text-base font-semibold text-gray-900">{upcomingClass.title}</span>
-                </motion.button>
+              <div className="aspect-video w-full rounded-xl overflow-hidden mb-4">
+                <YouTubeVideo 
+                  videoId="LoVZpF73YsA" 
+                  title={upcomingClass.title}
+                  className="w-full h-full"
+                />
               </div>
               <p className="text-sm text-gray-600 mb-4">{upcomingClass.topic}</p>
               <button className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200">
