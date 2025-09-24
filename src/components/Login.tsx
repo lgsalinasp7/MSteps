@@ -52,7 +52,7 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
       <div className="w-full max-w-lg relative z-10">
         {/* Header with prominent logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-white rounded-2xl shadow-2xl mb-4">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl shadow-2xl mb-4" style={{ backgroundColor: '#0B317D' }}>
             <Image 
               src="/logo.png" 
               alt="Mastersteps Logo" 
@@ -78,9 +78,10 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
                       }} 
                       className={`px-4 py-2 text-sm rounded-lg font-medium transition-all duration-200 ${
                         role==='admin'
-                          ?'bg-blue-600 text-white shadow-lg' 
+                          ?'text-white shadow-lg' 
                           :'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
+                      style={role === 'admin' ? { backgroundColor: '#0B317D' } : {}}
                     >
                       👑 Admin
                     </button>
@@ -92,9 +93,10 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
                       }} 
                       className={`px-4 py-2 text-sm rounded-lg font-medium transition-all duration-200 ${
                         role==='teacher'
-                          ?'bg-orange-500 text-white shadow-lg' 
+                          ?'text-white shadow-lg' 
                           :'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
+                      style={role === 'teacher' ? { backgroundColor: '#FFB33C' } : {}}
                     >
                       📚 Maestro
                     </button>
@@ -106,11 +108,12 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
                       }} 
                       className={`px-4 py-2 text-sm rounded-lg font-medium transition-all duration-200 ${
                         role==='parent'
-                          ?'bg-green-500 text-white shadow-lg' 
+                          ?'text-white shadow-lg' 
                           :'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
+                      style={role === 'parent' ? { backgroundColor: '#f04770' } : {}}
                     >
-                      👨‍👩‍👧‍👦 Padre
+                      👨‍👩‍👧‍👦 Padres
                     </button>
                   </div>
             </div>
@@ -124,13 +127,21 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
                 <label htmlFor="username" className="block text-sm font-medium mb-2 text-gray-700">Usuario</label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4 pointer-events-none" />
-                  <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    onInput={(e) => setUsername((e.target as HTMLInputElement).value)}
-                    placeholder="admin@empresa.com"
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-sm text-gray-900"
+                      <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        onInput={(e) => setUsername((e.target as HTMLInputElement).value)}
+                        placeholder="admin@empresa.com"
+                        className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:border-transparent bg-white text-sm text-gray-900"
+                        onFocus={(e) => {
+                          e.target.style.borderColor = '#0B317D';
+                          e.target.style.boxShadow = `0 0 0 2px #0B317D40`;
+                        }}
+                        onBlur={(e) => {
+                          e.target.style.borderColor = '#d1d5db';
+                          e.target.style.boxShadow = 'none';
+                        }}
                     required
                     autoComplete="username"
                     name="username"
@@ -149,7 +160,15 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
                     onChange={(e) => setPassword(e.target.value)}
                     onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
                     placeholder="••••••••"
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-sm text-gray-900"
+                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:border-transparent bg-white text-sm text-gray-900"
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#0B317D';
+                      e.target.style.boxShadow = `0 0 0 2px #0B317D40`;
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#d1d5db';
+                      e.target.style.boxShadow = 'none';
+                    }}
                     required
                     autoComplete="current-password"
                     name="password"
@@ -161,7 +180,19 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess?: () => void 
               <button
                 type="submit"
                 disabled={loading || !username.trim() || !password.trim()}
-                className="w-full px-6 py-3 text-sm font-semibold rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="w-full px-6 py-3 text-sm font-semibold rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+                style={{ 
+                  backgroundColor: '#0B317D',
+                  backgroundImage: `linear-gradient(135deg, #0B317D, #0B317D)`
+                }}
+                onMouseEnter={(e) => {
+                  if (!loading && username.trim() && password.trim()) {
+                    e.currentTarget.style.backgroundColor = '#083063';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#0B317D';
+                }}
               >
                 {loading ? 'Ingresando…' : '🚀 Ingresar al Sistema'}
               </button>

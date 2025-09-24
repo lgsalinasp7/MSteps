@@ -48,7 +48,7 @@ export function ParentDashboard() {
         <Download className="size-4" />
         Descargar Progreso
       </button>
-      <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-lg flex items-center gap-2">
+      <button className="px-6 py-3 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg flex items-center gap-2" style={{ backgroundColor: '#0B317D' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#083063'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0B317D'}>
         <MessageCircle className="size-4" />
         Contactar Maestra
       </button>
@@ -63,16 +63,18 @@ export function ParentDashboard() {
         <input 
           type="text"
           placeholder="Buscar clases, materiales, actividades..."
-          className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+          className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:border-transparent"
+          onFocus={(e) => { e.target.style.borderColor = '#0B317D'; e.target.style.boxShadow = '0 0 0 2px #0B317D40'; }}
+          onBlur={(e) => { e.target.style.borderColor = '#d1d5db'; e.target.style.boxShadow = 'none'; }}
         />
       </div>
-      <select className="px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-green-500">
+      <select className="px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2" onFocus={(e) => { e.target.style.borderColor = '#0B317D'; e.target.style.boxShadow = '0 0 0 2px #0B317D40'; }} onBlur={(e) => { e.target.style.borderColor = '#d1d5db'; e.target.style.boxShadow = 'none'; }}>
         <option>Todas las Clases</option>
         <option>Completadas</option>
         <option>Pendientes</option>
         <option>Favoritas</option>
       </select>
-      <select className="px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-green-500">
+      <select className="px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2" onFocus={(e) => { e.target.style.borderColor = '#0B317D'; e.target.style.boxShadow = '0 0 0 2px #0B317D40'; }} onBlur={(e) => { e.target.style.borderColor = '#d1d5db'; e.target.style.boxShadow = 'none'; }}>
         <option>Este Mes</option>
         <option>Últimos 3 Meses</option>
         <option>Todo el Tiempo</option>
@@ -117,7 +119,7 @@ export function ParentDashboard() {
                 change: "+3 esta semana",
                 changeType: "positive", 
                 icon: "✅",
-                color: "from-green-500 to-green-600",
+                color: "from-blue-500 to-blue-600",
                 description: "Actividades completadas"
               },
               {
@@ -126,7 +128,7 @@ export function ParentDashboard() {
                 change: "+4h esta semana",
                 changeType: "positive",
                 icon: "⏰",
-                color: "from-purple-500 to-purple-600",
+                color: "from-orange-500 to-orange-600",
                 description: "Horas invertidas"
               }
             ].map((stat, i) => (
@@ -142,7 +144,7 @@ export function ParentDashboard() {
                     {stat.icon}
                   </div>
                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                    stat.changeType === 'positive' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                    stat.changeType === 'positive' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'
                   }`}>
                     {stat.change}
                   </span>
@@ -167,7 +169,7 @@ export function ParentDashboard() {
                   En 2 días
                 </span>
               </div>
-              <div className="aspect-video w-full rounded-xl bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center mb-4">
+              <div className="aspect-video w-full rounded-xl bg-gradient-to-br from-blue-100 to-orange-100 flex items-center justify-center mb-4">
                 <motion.button 
                   className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/90 shadow-lg hover:shadow-xl transition-all duration-200"
                   whileHover={{ scale: 1.05 }}
@@ -197,9 +199,9 @@ export function ParentDashboard() {
                   <span className="text-sm text-gray-600">Asistencia a Clases</span>
                   <div className="flex items-center gap-2">
                     <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
-                      <div className="h-full bg-green-500 rounded-full" style={{ width: '92%' }}></div>
+                      <div className="h-full rounded-full" style={{ width: '92%', backgroundColor: '#0B317D' }}></div>
                     </div>
-                    <span className="text-sm font-bold text-green-600">92%</span>
+                    <span className="text-sm font-bold" style={{ color: '#0B317D' }}>92%</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
@@ -215,9 +217,9 @@ export function ParentDashboard() {
                   <span className="text-sm text-gray-600">Tareas Completadas</span>
                   <div className="flex items-center gap-2">
                     <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
-                      <div className="h-full bg-purple-500 rounded-full" style={{ width: '95%' }}></div>
+                      <div className="h-full rounded-full" style={{ width: '95%', backgroundColor: '#FFB33C' }}></div>
                     </div>
-                    <span className="text-sm font-bold text-purple-600">95%</span>
+                    <span className="text-sm font-bold" style={{ color: '#FFB33C' }}>95%</span>
                   </div>
                 </div>
                 <div className="mt-4 pt-4 border-t border-gray-100">
@@ -248,7 +250,7 @@ export function ParentDashboard() {
               <div className="space-y-4">
                 {materials.map((material, i) => (
                   <div key={i} className="flex items-center gap-4 p-4 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200 cursor-pointer">
-                    <div className="size-12 rounded-xl bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center shadow-md">
+                    <div className="size-12 rounded-xl bg-gradient-to-br from-blue-100 to-orange-100 flex items-center justify-center shadow-md">
                       <material.icon className="size-6 text-blue-600" />
                     </div>
                     <div className="flex-1">
@@ -270,15 +272,15 @@ export function ParentDashboard() {
                   <h3 className="text-lg font-bold text-gray-900">Asistente IA</h3>
                   <p className="text-sm text-gray-600">Consejos personalizados para el hogar</p>
                 </div>
-                <MessageCircle className="size-5 text-purple-600" />
+                <MessageCircle className="size-5" style={{ color: '#0B317D' }} />
               </div>
               <div className="space-y-4">
-                <div className="p-4 rounded-xl bg-purple-50 border border-purple-200">
+                <div className="p-4 rounded-xl bg-blue-50 border border-blue-200">
                   <div className="flex items-start gap-3">
-                    <div className="size-8 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold text-xs">IA</div>
+                    <div className="size-8 rounded-full flex items-center justify-center text-white font-bold text-xs" style={{ backgroundColor: '#0B317D' }}>IA</div>
                     <div className="flex-1">
                       <p className="text-sm text-gray-700">"¿Cómo puedo ayudar a {childProgress.name} a memorizar versículos bíblicos de manera divertida?"</p>
-                      <button className="text-xs text-purple-600 hover:text-purple-800 mt-2 font-medium">Ver respuesta completa →</button>
+                      <button className="text-xs mt-2 font-medium hover:opacity-80" style={{ color: '#0B317D' }}>Ver respuesta completa →</button>
                     </div>
                   </div>
                 </div>
@@ -293,7 +295,7 @@ export function ParentDashboard() {
                     </button>
                   ))}
                 </div>
-                <button className="w-full px-4 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all duration-200">
+                <button className="w-full px-4 py-3 text-white font-semibold rounded-xl transition-all duration-200" style={{ backgroundColor: '#0B317D' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#083063'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0B317D'}>
                   Hacer una Pregunta
                 </button>
               </div>
@@ -322,8 +324,8 @@ export function ParentDashboard() {
                     <div className={`size-8 rounded-lg flex items-center justify-center text-sm ${
                       item.type === 'achievement' ? 'bg-yellow-100 text-yellow-700' :
                       item.type === 'quiz' ? 'bg-blue-100 text-blue-700' :
-                      item.type === 'video' ? 'bg-purple-100 text-purple-700' :
-                      item.type === 'class' ? 'bg-green-100 text-green-700' :
+                      item.type === 'video' ? 'bg-blue-100 text-blue-700' :
+                      item.type === 'class' ? 'bg-orange-100 text-orange-700' :
                       item.type === 'homework' ? 'bg-orange-100 text-orange-700' :
                       'bg-indigo-100 text-indigo-700'
                     }`}>

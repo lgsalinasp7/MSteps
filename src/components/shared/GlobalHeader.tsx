@@ -31,7 +31,7 @@ export function GlobalHeader() {
   const getRoleColor = () => {
     switch(state.user?.role) {
       case 'admin': return 'from-blue-500 to-blue-600';
-      case 'teacher': return 'from-orange-500 to-orange-600';
+      case 'teacher': return 'from-orange-300 to-orange-400';
       case 'parent': return 'from-green-500 to-green-600';
       default: return 'from-gray-500 to-gray-600';
     }
@@ -56,8 +56,8 @@ export function GlobalHeader() {
           {/* Logo y marca */}
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              {/* Logo con fondo blanco */}
-              <div className="size-12 rounded-xl bg-white/95 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30">
+              {/* Logo sin fondo */}
+              <div className="size-12 rounded-xl flex items-center justify-center">
                 <Image 
                   src="/logo.png" 
                   alt="Mastersteps Logo" 
@@ -89,7 +89,7 @@ export function GlobalHeader() {
           {/* Área de usuario */}
           <div className="flex items-center gap-4">
             {/* Notificaciones */}
-            <button className="relative p-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-200">
+            <button className="relative p-3 rounded-xl hover:bg-white/20 transition-all duration-200">
               <Bell className="size-5 text-white" />
               <span className="absolute -top-1 -right-1 size-5 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center border-2" style={{ borderColor: '#0B317D' }}>
                 <span className="text-white text-xs font-bold">3</span>
@@ -102,10 +102,10 @@ export function GlobalHeader() {
             <div className="relative" ref={menuRef}>
               <button 
                 onClick={() => setMenuOpen(!menuOpen)} 
-                className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-200"
+                className="flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-white/20 transition-all duration-200"
               >
                 <div 
-                  className={`size-10 rounded-xl bg-gradient-to-br ${getRoleColor()} flex items-center justify-center text-white font-bold shadow-lg`}
+                  className={`size-10 rounded-full bg-gradient-to-br ${getRoleColor()} flex items-center justify-center text-white font-bold shadow-lg`}
                 >
                   {getRoleIcon()}
                 </div>
@@ -121,7 +121,7 @@ export function GlobalHeader() {
                   <div className="p-4 bg-gradient-to-r from-blue-50 to-blue-100 border-b border-blue-200">
                     <div className="flex items-center gap-3">
                       <div 
-                        className={`size-12 rounded-xl bg-gradient-to-br ${getRoleColor()} flex items-center justify-center text-white font-bold shadow-lg`}
+                        className={`size-12 rounded-full bg-gradient-to-br ${getRoleColor()} flex items-center justify-center text-white font-bold shadow-lg`}
                       >
                         {getRoleIcon()}
                       </div>

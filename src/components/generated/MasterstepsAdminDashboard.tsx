@@ -53,8 +53,8 @@ export const MasterstepsAdminDashboard: React.FC = () => {
         >
           🔄 Intentar de nuevo
         </button>
-      </div>
-    </div>
+          </div>
+          </div>
   );
 
   const sidebarItems: NavItem[] = [
@@ -94,7 +94,7 @@ export const MasterstepsAdminDashboard: React.FC = () => {
           placeholder="Buscar iglesias, usuarios, reportes..."
           className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
-      </div>
+            </div>
       <select className="px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
         <option>Todas las Iglesias</option>
         <option>Activas</option>
@@ -166,7 +166,7 @@ export const MasterstepsAdminDashboard: React.FC = () => {
             className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-200"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className={`size-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center text-white text-xl shadow-md`}>
+              <div className={`size-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center text-white text-xl shadow-md`}>
                 {stat.icon}
               </div>
               <span className={`px-2 py-1 text-xs font-medium rounded-full ${
@@ -227,21 +227,21 @@ export const MasterstepsAdminDashboard: React.FC = () => {
                   <div>
                     <p className="text-sm font-medium text-gray-900">{iglesia.name}</p>
                     <p className="text-xs text-gray-500">{iglesia.students} estudiantes</p>
-                  </div>
+                </div>
                 </div>
                 <span className="text-xs font-medium text-green-600">{iglesia.growth}</span>
               </div>
             ))}
           </div>
-        </div>
-      </div>
+              </div>
+            </div>
 
       {/* Sección de gestión rápida */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Acciones Administrativas */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
           <div className="flex items-center gap-3 mb-4">
-            <div className="size-10 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white">
+            <div className="size-10 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white">
               ⚡
             </div>
             <h3 className="text-lg font-bold text-gray-900">Acciones Rápidas</h3>
@@ -257,19 +257,19 @@ export const MasterstepsAdminDashboard: React.FC = () => {
                 key={i}
                 className="w-full flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-left"
               >
-                <div className={`size-8 rounded-lg bg-gradient-to-br ${accion.color} flex items-center justify-center text-white text-sm`}>
+                <div className={`size-8 rounded-xl bg-gradient-to-br ${accion.color} flex items-center justify-center text-white text-sm`}>
                   {accion.icon}
-                </div>
+              </div>
                 <span className="text-sm font-medium text-gray-900">{accion.label}</span>
               </button>
             ))}
-          </div>
-        </div>
+              </div>
+            </div>
 
         {/* Actividad Reciente */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
           <div className="flex items-center gap-3 mb-4">
-            <div className="size-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white">
+            <div className="size-10 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white">
               🔔
             </div>
             <h3 className="text-lg font-bold text-gray-900">Actividad Reciente</h3>
@@ -292,17 +292,17 @@ export const MasterstepsAdminDashboard: React.FC = () => {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
+              </div>
+            </div>
 
         {/* Estadísticas del Sistema */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
           <div className="flex items-center gap-3 mb-4">
-            <div className="size-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white">
+            <div className="size-10 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white">
               📈
             </div>
             <h3 className="text-lg font-bold text-gray-900">Estadísticas</h3>
-          </div>
+              </div>
           <div className="space-y-4">
             {[
               { label: "Tasa de Retención", value: "92%", trend: "+3%" },
@@ -318,8 +318,8 @@ export const MasterstepsAdminDashboard: React.FC = () => {
                 <span className="text-lg font-bold text-gray-900">{stat.value}</span>
               </div>
             ))}
-          </div>
-        </div>
+              </div>
+            </div>
       </div>
     </UnifiedDashboardLayout>
   );
